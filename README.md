@@ -12,6 +12,8 @@ Then, create an empty directory named **bin** in the repository.
 
 Now, open the **sudoku-cpp** directory in the terminal and run the following commands
 
-```runs the sudoku
-make run
+```runs sudoku
+make
 ```
+
+Note: _The development process is still in process._
