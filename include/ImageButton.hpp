@@ -6,7 +6,7 @@
 
 class ImageButton {
  public:
-  ImageButton(std::string myState);
+  ImageButton();
 
   void Render(sf::RenderWindow &window);
 
@@ -14,27 +14,27 @@ class ImageButton {
   void setImage(std::string imagePath);
   void setPosition(sf::Vector2f position);
 
-  // mouse actions
+  // button actions
   void Hover(sf::RenderWindow &window);
-  void Clicked(sf::RenderWindow &window, std::string &activeState,
-               std::string id);
+  bool Clicked(sf::RenderWindow &window, std::string &activeState,
+               std::string id = "");
 
  private:
   sf::RectangleShape m_overlay;
   // image
   sf::Texture m_texture;
   sf::Sprite m_sprite;
-  std::string m_myState;
 
   // mouse actions (boolean)
   bool IsMouseOver(sf::RenderWindow &window);
+  bool IsMouseDown(sf::RenderWindow &window);
+  bool IsMouseUp(sf::RenderWindow &window);
+  bool m_clickedOnce;
 
   void setOverlay();
 };
 
-ImageButton::ImageButton(std::string myState) : m_myState(myState) {
-  m_overlay.setFillColor(sf::Color::Transparent);
-}
+ImageButton::ImageButton() { m_overlay.setFillColor(sf::Color::Transparent); }
 
 void ImageButton::setOverlay() {
   float sizeX = m_sprite.getGlobalBounds().width;
@@ -59,6 +59,7 @@ void ImageButton::Render(sf::RenderWindow &window) {
   window.draw(m_overlay);
 }
 
+// mouse actions
 bool ImageButton::IsMouseOver(sf::RenderWindow &window) {
   float mousePosX = sf::Mouse::getPosition(window).x;
   float mousePosY = sf::Mouse::getPosition(window).y;
@@ -75,19 +76,40 @@ bool ImageButton::IsMouseOver(sf::RenderWindow &window) {
   return isHoveringX && isHoveringY;
 }
 
+bool ImageButton::IsMouseDown(sf::RenderWindow &window) {
+  return IsMouseOver(window) && sf::Mouse::isButtonPressed(sf::Mouse::Left);
+}
+
+bool ImageButton::IsMouseUp(sf::RenderWindow &window) {
+  return IsMouseOver(window) && !IsMouseDown(window) && m_clickedOnce;
+}
+
+// button actions
 void ImageButton::Hover(sf::RenderWindow &window) {
-  if (IsMouseOver(window)) m_overlay.setFillColor(sf::Color(0, 0, 0, 50));
+  if (IsMouseOver(window)) m_overlay.setFillColor(sf::Color(225, 225, 225, 50));
   if (!IsMouseOver(window)) m_overlay.setFillColor(sf::Color::Transparent);
 }
 
-void ImageButton::Clicked(sf::RenderWindow &window, std::string &activeState,
+bool ImageButton::Clicked(sf::RenderWindow &window, std::string &activeState,
                           std::string id) {
-  if (IsMouseOver(window) && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-    if (id == "exit")
-      window.close();
+  if (IsMouseDown(window)) {
+    m_clickedOnce = true;
+    m_overlay.setFillColor(sf::Color(0, 0, 0, 50));
+  }
 
-    else
-      activeState = id;
+  if (IsMouseUp(window)) {
+    m_clickedOnce = false;
+
+    if (id != "") {
+      if (id == "exit") {
+        window.close();
+      } else {
+        activeState = id;
+      }
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 

@@ -1,6 +1,7 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include "GameState.hpp"
 #include "LevelsState.hpp"
 #include "MainMenuState.hpp"
 
@@ -19,6 +20,7 @@ class Game {
   // states
   MainMenuState m_mainMenuState;
   LevelsState m_levelsState;
+  GameState m_gameState;
 
  public:
   Game(sf::Vector2f winSize = {200, 200}, std::string title = "",
@@ -46,6 +48,9 @@ void Game::LoadStates() {
 
   m_levelsState.setActiveState(&m_activeState);
   m_levelsState.setWindow(&m_window);
+
+  m_gameState.setActiveState(&m_activeState);
+  m_gameState.setWindow(&m_window);
 }
 
 void Game::HandleInputs() {
@@ -65,7 +70,8 @@ void Game::HandleInputs() {
 
 void Game::Update() {
   if (m_activeState == MAIN_MENU_ID) m_mainMenuState.Update();
-  if (m_activeState == LEVELS_ID) m_levelsState.Update();
+  if (m_activeState == LEVELS_ID) m_levelsState.Update(m_gameState);
+  if (m_activeState == GAME_ID) m_gameState.Update();
 }
 
 void Game::Render() {
@@ -73,6 +79,7 @@ void Game::Render() {
 
   if (m_activeState == MAIN_MENU_ID) m_mainMenuState.Render();
   if (m_activeState == LEVELS_ID) m_levelsState.Render();
+  if (m_activeState == GAME_ID) m_gameState.Render();
 
   m_window.display();
 }

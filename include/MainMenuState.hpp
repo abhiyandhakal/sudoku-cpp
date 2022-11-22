@@ -23,8 +23,7 @@ class MainMenuState {
   // =================================
 
   // buttons
-  TextButton m_newGameBtn{MAIN_MENU_ID}, m_howToPlayBtn{MAIN_MENU_ID},
-      m_highScoreBtn{MAIN_MENU_ID}, m_exitBtn{MAIN_MENU_ID};
+  TextButton m_newGameBtn, m_howToPlayBtn, m_highScoreBtn, m_exitBtn;
 
   // load stuff
   void LoadStatic();

@@ -2,6 +2,7 @@
 #define LEVELS_HPP
 
 #include "DEFINITIONS.hpp"
+#include "GameState.hpp"
 #include "ImageButton.hpp"
 #include "TextButton.hpp"
 
@@ -9,6 +10,7 @@ class LevelsState {
  private:
   sf::RenderWindow* m_window;
   std::string* m_activeState;
+  sf::Font m_font;
 
   // image
   sf::Texture m_bgTexture;
@@ -16,12 +18,10 @@ class LevelsState {
 
   // text
   sf::Text m_title;
-  sf::Font m_font;
 
   // buttons
-  ImageButton m_backBtn{LEVELS_ID};
-  TextButton m_easyBtn{LEVELS_ID}, m_mediumBtn{LEVELS_ID}, m_hardBtn{LEVELS_ID},
-      m_expertBtn{LEVELS_ID};
+  ImageButton m_backBtn;
+  TextButton m_easyBtn, m_mediumBtn, m_hardBtn, m_expertBtn;
 
   // load stuff
   void LoadStatic();
@@ -34,7 +34,7 @@ class LevelsState {
   void setWindow(sf::RenderWindow* window);
   void setActiveState(std::string* activeState);
 
-  void Update();
+  void Update(GameState& gameState);
   void Render();
 };
 
@@ -54,7 +54,7 @@ void LevelsState::setActiveState(std::string* activeState) {
 // ===========================================
 // LOAD STUFFS
 // ===========================================
-// images
+// static
 void LevelsState::LoadStatic() {
   // background image
   m_bgTexture.loadFromFile("assets/images/background.png");
@@ -97,7 +97,7 @@ void LevelsState::LoadBtns() {
   m_expertBtn.setPosition({235, 502});
 }
 
-void LevelsState::Update() {
+void LevelsState::Update(GameState& gameState) {
   // hovering the buttons
   m_backBtn.Hover(*m_window);
   m_easyBtn.Hover(*m_window);
@@ -105,25 +105,21 @@ void LevelsState::Update() {
   m_hardBtn.Hover(*m_window);
   m_expertBtn.Hover(*m_window);
 
-  sf::Event event;
-
-  while (m_window->pollEvent(event)) {
-    if (event.type == sf::Event::MouseButtonPressed) {
-      if (m_easyBtn.IsMouseOver(*m_window)) *m_activeState = GAME_ID;
-    }
-  }
-
   // clicking the buttons
   m_backBtn.Clicked(*m_window, *m_activeState, MAIN_MENU_ID);
-  // m_easyBtn.Clicked(*m_window, *m_activeState, GAME_ID);
-  m_mediumBtn.Clicked(*m_window, *m_activeState, GAME_ID);
-  m_hardBtn.Clicked(*m_window, *m_activeState, GAME_ID);
-  m_expertBtn.Clicked(*m_window, *m_activeState, GAME_ID);
+
+  // levels buttons
+  if (m_easyBtn.Clicked(*m_window, *m_activeState, GAME_ID))
+    gameState.setLevel("Easy");
+  if (m_mediumBtn.Clicked(*m_window, *m_activeState, GAME_ID))
+    gameState.setLevel("Medium");
+  if (m_hardBtn.Clicked(*m_window, *m_activeState, GAME_ID))
+    gameState.setLevel("Hard");
+  if (m_expertBtn.Clicked(*m_window, *m_activeState, GAME_ID))
+    gameState.setLevel("Expert");
 }
 
 void LevelsState::Render() {
-  m_window->clear();
-
   m_window->draw(m_bgSprite);
   m_window->draw(m_title);
 

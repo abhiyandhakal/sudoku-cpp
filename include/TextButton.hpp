@@ -7,7 +7,7 @@
 
 class TextButton {
  public:
-  TextButton(std::string myState);
+  TextButton();
 
   void Render(sf::RenderWindow &window);
 
@@ -23,14 +23,8 @@ class TextButton {
   // button actions
   void Hover(sf::RenderWindow &window, sf::Color color = sf::Color::Black,
              sf::Color bg = sf::Color::Cyan);
-  void Clicked(sf::RenderWindow &window, std::string &activeState,
+  bool Clicked(sf::RenderWindow &window, std::string &activeState,
                std::string id);
-
-  // mouse actions (booleans)
-  bool IsMouseOver(sf::RenderWindow &window);  // hover
-  bool m_clickedOnce;
-  bool IsMouseDown(sf::RenderWindow &window);
-  bool IsMouseUp(sf::RenderWindow &window);
 
  private:
   sf::RectangleShape m_container;
@@ -39,7 +33,12 @@ class TextButton {
   sf::CircleShape m_right;
   sf::Text m_text;
   sf::Font m_font;
-  std::string m_myState;
+
+  // mouse actions (booleans)
+  bool IsMouseOver(sf::RenderWindow &window);  // hover
+  bool m_clickedOnce;
+  bool IsMouseDown(sf::RenderWindow &window);
+  bool IsMouseUp(sf::RenderWindow &window);
 
   // set values
   sf::Color m_setColor;
@@ -50,7 +49,7 @@ class TextButton {
   void setShapesPosition();
 };
 
-TextButton::TextButton(std::string myState) : m_myState(myState) {
+TextButton::TextButton() {
   // set values
   m_setColor = sf::Color(50, 50, 50);
   m_setBg = sf::Color(187, 185, 225);
@@ -173,6 +172,14 @@ bool TextButton::IsMouseOver(sf::RenderWindow &window) {
   return isHoveringX && isHoveringY;
 }
 
+bool TextButton::IsMouseDown(sf::RenderWindow &window) {
+  return IsMouseOver(window) && sf::Mouse::isButtonPressed(sf::Mouse::Left);
+}
+
+bool TextButton::IsMouseUp(sf::RenderWindow &window) {
+  return IsMouseOver(window) && !IsMouseDown(window) && m_clickedOnce;
+}
+
 // ===========================================
 // BUTTON ACTIONS
 // ===========================================
@@ -193,15 +200,7 @@ void TextButton::Hover(sf::RenderWindow &window, sf::Color color,
   }
 }
 
-bool TextButton::IsMouseDown(sf::RenderWindow &window) {
-  return IsMouseOver(window) && sf::Mouse::isButtonPressed(sf::Mouse::Left);
-}
-
-bool TextButton::IsMouseUp(sf::RenderWindow &window) {
-  return IsMouseOver(window) && !IsMouseDown(window) && m_clickedOnce;
-}
-
-void TextButton::Clicked(sf::RenderWindow &window, std::string &activeState,
+bool TextButton::Clicked(sf::RenderWindow &window, std::string &activeState,
                          std::string id) {
   if (IsMouseDown(window)) {
     m_clickedOnce = true;
@@ -210,11 +209,15 @@ void TextButton::Clicked(sf::RenderWindow &window, std::string &activeState,
   if (IsMouseUp(window)) {
     m_clickedOnce = false;
 
-    if (id == "exit")
+    if (id == "exit") {
       window.close();
-
-    else
+    } else {
       activeState = id;
+    }
+
+    return true;
+  } else {
+    return false;
   }
 }
 

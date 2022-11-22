@@ -7,5 +7,6 @@
 #define GAME_ID "game"
 #define HOW_TO_PLAY_ID "how-to-play"
 #define HIGH_SCORE_ID "high-score"
+#define PAUSE_ID "pause"
 
 #endif
