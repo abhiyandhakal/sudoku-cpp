@@ -5,6 +5,8 @@
 #include "LevelsState.hpp"
 #include "MainMenuState.hpp"
 
+Stopwatch STOPWATCH;
+
 class Game {
  private:
   sf::RenderWindow m_window;
@@ -20,10 +22,7 @@ class Game {
   // states
   MainMenuState m_mainMenuState;
   LevelsState m_levelsState;
-  GameState m_gameState;
-
-  // stopwatch
-  Stopwatch m_stopwatch;
+  GameState m_gameState{STOPWATCH};
 
  public:
   Game(sf::Vector2f winSize = {200, 200}, std::string title = "",
@@ -33,6 +32,8 @@ class Game {
 };
 
 Game::Game(sf::Vector2f winSize, std::string title, int framerateLimit) {
+  // stopwatch
+
   // smooth shapes
   m_settings.antialiasingLevel = 8;
 
@@ -54,7 +55,6 @@ void Game::LoadStates() {
 
   m_gameState.setActiveState(&m_activeState);
   m_gameState.setWindow(&m_window);
-  m_gameState.setStopwatch(m_stopwatch);
 }
 
 void Game::HandleInputs() {
@@ -64,6 +64,14 @@ void Game::HandleInputs() {
     switch (event.type) {
       case sf::Event::Closed:
         m_window.close();
+        break;
+
+      case sf::Event::LostFocus:
+        STOPWATCH.Pause();
+        break;
+
+      case sf::Event::GainedFocus:
+        STOPWATCH.Resume();
         break;
 
       default:
