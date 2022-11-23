@@ -24,7 +24,7 @@ class TextButton {
   void Hover(sf::RenderWindow &window, sf::Color color = sf::Color::Black,
              sf::Color bg = sf::Color::Cyan);
   bool Clicked(sf::RenderWindow &window, std::string &activeState,
-               std::string id);
+               std::string id = "");
 
  private:
   sf::RectangleShape m_container;
@@ -211,7 +211,7 @@ bool TextButton::Clicked(sf::RenderWindow &window, std::string &activeState,
 
     if (id == "exit") {
       window.close();
-    } else {
+    } else if (id != "") {
       activeState = id;
     }
 

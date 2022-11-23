@@ -100,16 +100,14 @@ bool ImageButton::Clicked(sf::RenderWindow &window, std::string &activeState,
   if (IsMouseUp(window)) {
     m_clickedOnce = false;
 
-    if (id != "") {
-      if (id == "exit") {
-        window.close();
-      } else {
-        activeState = id;
-      }
-      return true;
-    } else {
-      return false;
+    if (id == "exit") {
+      window.close();
+    } else if (id != "") {
+      activeState = id;
     }
+    return true;
+  } else {
+    return false;
   }
 }
 

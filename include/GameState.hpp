@@ -54,7 +54,7 @@ class GameState {
   sf::Text m_mistakesTextDynamic;
 
   // buttons
-  ImageButton m_pauseBtn, m_undoBtn;
+  ImageButton m_pauseBtn, m_eraseBtn;
   NumberButton m_numBtns[NUM];
 
   // load stuff
@@ -183,8 +183,8 @@ void GameState::LoadBtns() {
   m_pauseBtn.setPosition({15, 15});
 
   // undo button
-  m_undoBtn.setImage("assets/images/undo.png");
-  m_undoBtn.setPosition({534, 15});
+  m_eraseBtn.setImage("assets/images/eraser.png");
+  m_eraseBtn.setPosition({534, 15});
 
   // number buttons
   for (int i = 0; i < NUM; i++) {
@@ -244,14 +244,70 @@ void GameState::Update() {
 
   // hovering the buttons
   m_pauseBtn.Hover(*m_window);
-  m_undoBtn.Hover(*m_window);
+  m_eraseBtn.Hover(*m_window);
   for (int i = 0; i < NUM; i++) {
     m_numBtns[i].Hover(*m_window);
   }
 
   // clicking the buttons
   m_pauseBtn.Clicked(*m_window, *m_activeState, PAUSE_ID);
-  m_undoBtn.Clicked(*m_window, *m_activeState);
+  if (m_eraseBtn.Clicked(*m_window, *m_activeState)) {
+    m_clickedNum = 0;
+    isClickedOnce = true;
+    std::cout << "erased\n";
+  }
+
+  // keyboard insertion of numbers
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num0) ||
+      sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad0)) {
+    m_clickedNum = 0;
+    isClickedOnce = true;
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1) ||
+      sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad1)) {
+    m_clickedNum = 1;
+    isClickedOnce = true;
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2) ||
+      sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad2)) {
+    m_clickedNum = 2;
+    isClickedOnce = true;
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3) ||
+      sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad3)) {
+    m_clickedNum = 3;
+    isClickedOnce = true;
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4) ||
+      sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad4)) {
+    m_clickedNum = 4;
+    isClickedOnce = true;
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5) ||
+      sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad5)) {
+    m_clickedNum = 5;
+    isClickedOnce = true;
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num6) ||
+      sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad6)) {
+    m_clickedNum = 6;
+    isClickedOnce = true;
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num7) ||
+      sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad7)) {
+    m_clickedNum = 7;
+    isClickedOnce = true;
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8) ||
+      sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad8)) {
+    m_clickedNum = 8;
+    isClickedOnce = true;
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num9) ||
+      sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad9)) {
+    m_clickedNum = 9;
+    isClickedOnce = true;
+  }
 
   for (int i = 0; i < NUM; i++) {
     for (int j = 0; j < NUM; j++) {
@@ -285,7 +341,11 @@ void GameState::Update() {
   }
 
   // check if solved
-  if (CheckIfSolved()) *m_activeState = MAIN_MENU_ID;
+  if (CheckIfSolved()) {
+    m_stopwatch.Reset();
+    m_stopwatch.Pause();
+    *m_activeState = MAIN_MENU_ID;
+  }
 }
 
 void GameState::Render() {
@@ -313,7 +373,7 @@ void GameState::Render() {
 
   // render buttons
   m_pauseBtn.Render(*m_window);
-  m_undoBtn.Render(*m_window);
+  m_eraseBtn.Render(*m_window);
   for (int i = 0; i < NUM; i++) {
     m_numBtns[i].Render(*m_window);
   }
