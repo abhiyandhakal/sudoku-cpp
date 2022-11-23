@@ -15,9 +15,10 @@ class Stopwatch {
 
  public:
   Stopwatch() {
-    m_isPaused = false;
+    m_isPaused = true;
     m_runTime = 0;
     m_clock.restart();
+    Pause();
   }
 
   void Reset();

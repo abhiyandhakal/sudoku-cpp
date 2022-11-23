@@ -9,6 +9,7 @@
 #include "ImageButton.hpp"
 #include "NumberButton.hpp"
 #include "Stopwatch.hpp"
+#include "SudokuButton.hpp"
 #include "SudokuGenerator.hpp"
 #include "TextButton.hpp"
 
@@ -17,6 +18,8 @@ class GameState {
   sf::RenderWindow* m_window;
   std::string* m_activeState;
   std::string m_level;
+
+  int m_clickedNum;
 
   // font
   sf::Font m_font;
@@ -31,7 +34,9 @@ class GameState {
   // sudoku
   SudokuGenerator* m_sudokuGenerator;
   int** m_generatedSudoku;
-  sf::Text m_sudokuTexts[NUM][NUM];
+  SudokuButton m_sudokuTexts[NUM][NUM];
+  int m_activeX;
+  int m_activeY;
 
   sf::Texture m_sudokuGridTexture;
   sf::Sprite m_sudokuGridSprite;
@@ -86,9 +91,9 @@ void GameState::setLevel(std::string level) {
   m_levelText.setString(level);
 
   if (level == "Easy")
-    LoadSudoku(10);
-  else if (level == "Medium")
     LoadSudoku(20);
+  else if (level == "Medium")
+    LoadSudoku(25);
   else if (level == "Hard")
     LoadSudoku(30);
   else if (level == "Expert")
@@ -176,13 +181,9 @@ void GameState::LoadSudoku(int empty) {
     for (int j = 0; j < NUM; j++) {
       int num = m_generatedSudoku[i][j];
 
-      m_sudokuTexts[i][j].setFont(m_font);
-      m_sudokuTexts[i][j].setString(num != 0 ? std::to_string(num) : "");
-      m_sudokuTexts[i][j].setCharacterSize(30);
-      // +18 and +5 to center the text
-      m_sudokuTexts[i][j].setPosition(i * 50 + 75 + 18, j * 50 + 100 + 5);
-      // m_sudokuTexts[i][j].setPosition(100, 100);
-      m_sudokuTexts[i][j].setFillColor(sf::Color::Black);
+      m_sudokuTexts[i][j].setNumber(num);
+      m_sudokuTexts[i][j].setSize({50, 50});
+      m_sudokuTexts[i][j].setPosition({i * 50 + 75, j * 50 + 100});
     }
   }
 }
@@ -190,6 +191,12 @@ void GameState::LoadSudoku(int empty) {
 // ===========================================
 
 void GameState::Update() {
+  // has number button been clicked once?
+  bool isClickedOnce = false;
+
+  // starting the stopwatch
+  m_stopwatch.Resume();
+
   // hovering the buttons
   m_pauseBtn.Hover(*m_window);
   m_undoBtn.Hover(*m_window);
@@ -200,8 +207,34 @@ void GameState::Update() {
   // clicking the buttons
   m_pauseBtn.Clicked(*m_window, *m_activeState, PAUSE_ID);
   m_undoBtn.Clicked(*m_window, *m_activeState);
+
   for (int i = 0; i < NUM; i++) {
-    m_numBtns[i].Clicked(*m_window, *m_activeState);
+    for (int j = 0; j < NUM; j++) {
+      if (m_sudokuTexts[i][j].Clicked(*m_window)) {
+        m_sudokuTexts[m_activeX][m_activeY].setStatus("not-active");
+
+        m_activeX = i;
+        m_activeY = j;
+
+        m_sudokuTexts[i][j].setStatus("active");
+      }
+
+      // insert number
+      if (isClickedOnce) {
+        m_sudokuTexts[m_activeX][m_activeY].setNumber(m_clickedNum);
+        m_sudokuTexts[m_activeX][m_activeY].setTextPosition();
+
+        isClickedOnce = false;
+      }
+
+      if (m_numBtns[i].Clicked(*m_window, *m_activeState)) {
+        m_clickedNum = i + 1;
+        isClickedOnce = true;
+      }
+
+      // hover
+      m_sudokuTexts[i][j].Hover(*m_window);
+    }
   }
 }
 
@@ -224,7 +257,7 @@ void GameState::Render() {
   // sudoku
   for (int i = 0; i < NUM; i++) {
     for (int j = 0; j < NUM; j++) {
-      m_window->draw(m_sudokuTexts[i][j]);
+      m_sudokuTexts[i][j].Render(*m_window);
     }
   }
 

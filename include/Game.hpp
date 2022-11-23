@@ -71,7 +71,7 @@ void Game::HandleInputs() {
         break;
 
       case sf::Event::GainedFocus:
-        STOPWATCH.Resume();
+        if (m_activeState == GAME_ID) STOPWATCH.Resume();
         break;
 
       default:
