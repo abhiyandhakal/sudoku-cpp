@@ -1,12 +1,15 @@
 #ifndef GAME_STATE_HPP
 #define GAME_STATE_HPP
 
-#include <string>
+#define NUM 9
+
+#include <sstream>
 
 #include "DEFINITIONS.hpp"
 #include "ImageButton.hpp"
 #include "NumberButton.hpp"
 #include "Stopwatch.hpp"
+#include "SudokuGenerator.hpp"
 #include "TextButton.hpp"
 
 class GameState {
@@ -19,11 +22,16 @@ class GameState {
   sf::Font m_font;
 
   // stopwatch
-  Stopwatch m_stopwatch;
+  Stopwatch& m_stopwatch;
 
   // images
   sf::Texture m_bgTexture;
   sf::Sprite m_bgSprite;
+
+  // sudoku
+  SudokuGenerator* m_sudokuGenerator;
+  int** m_generatedSudoku;
+  sf::Text m_sudokuTexts[NUM][NUM];
 
   sf::Texture m_sudokuGridTexture;
   sf::Sprite m_sudokuGridSprite;
@@ -40,28 +48,28 @@ class GameState {
 
   // buttons
   ImageButton m_pauseBtn, m_undoBtn;
-  NumberButton m_numBtns[9];
+  NumberButton m_numBtns[NUM];
 
   // load stuff
   void LoadStatic();
   void LoadBtns();
+  void LoadSudoku(int empty);
 
  public:
-  GameState();
+  GameState(Stopwatch& stopwatch);
 
   // setters
   void setWindow(sf::RenderWindow* window);
   void setActiveState(std::string* activeState);
   void setLevel(std::string level);
-  void setStopwatch(Stopwatch& stopwatch);
 
   void Update();
   void Render();
 };
 
 // constructor
-GameState::GameState() {
-  m_level = "Easy";
+GameState::GameState(Stopwatch& stopwatch)
+    : m_stopwatch(stopwatch), m_level("Easy") {
   LoadStatic();
   LoadBtns();
 }
@@ -76,9 +84,16 @@ void GameState::setActiveState(std::string* activeState) {
 void GameState::setLevel(std::string level) {
   m_level = level;
   m_levelText.setString(level);
-}
 
-void GameState::setStopwatch(Stopwatch& stopwatch) { m_stopwatch = stopwatch; }
+  if (level == "Easy")
+    LoadSudoku(10);
+  else if (level == "Medium")
+    LoadSudoku(20);
+  else if (level == "Hard")
+    LoadSudoku(30);
+  else if (level == "Expert")
+    LoadSudoku(40);
+}
 
 // ===========================================
 // LOAD STUFFS
@@ -144,25 +159,48 @@ void GameState::LoadBtns() {
   m_undoBtn.setPosition({534, 15});
 
   // number buttons
-  for (int i = 0; i < 9; i++) {
+  for (int i = 0; i < NUM; i++) {
     m_numBtns[i].setNumber(std::to_string(i + 1));
     m_numBtns[i].setFontSize(64);
     m_numBtns[i].setPosition({(i * 50 + 75), 550});
   }
 }
 
+void GameState::LoadSudoku(int empty) {
+  srand(time(NULL));
+
+  m_sudokuGenerator = new SudokuGenerator(NUM, empty);
+  m_generatedSudoku = m_sudokuGenerator->getSudoku();
+
+  for (int i = 0; i < NUM; i++) {
+    for (int j = 0; j < NUM; j++) {
+      int num = m_generatedSudoku[i][j];
+
+      m_sudokuTexts[i][j].setFont(m_font);
+      m_sudokuTexts[i][j].setString(num != 0 ? std::to_string(num) : "");
+      m_sudokuTexts[i][j].setCharacterSize(30);
+      // +18 and +5 to center the text
+      m_sudokuTexts[i][j].setPosition(i * 50 + 75 + 18, j * 50 + 100 + 5);
+      // m_sudokuTexts[i][j].setPosition(100, 100);
+      m_sudokuTexts[i][j].setFillColor(sf::Color::Black);
+    }
+  }
+}
+
+// ===========================================
+
 void GameState::Update() {
   // hovering the buttons
   m_pauseBtn.Hover(*m_window);
   m_undoBtn.Hover(*m_window);
-  for (int i = 0; i < 9; i++) {
+  for (int i = 0; i < NUM; i++) {
     m_numBtns[i].Hover(*m_window);
   }
 
   // clicking the buttons
   m_pauseBtn.Clicked(*m_window, *m_activeState, PAUSE_ID);
   m_undoBtn.Clicked(*m_window, *m_activeState);
-  for (int i = 0; i < 9; i++) {
+  for (int i = 0; i < NUM; i++) {
     m_numBtns[i].Clicked(*m_window, *m_activeState);
   }
 }
@@ -174,18 +212,26 @@ void GameState::Render() {
   m_window->draw(m_titleSprite);
 
   // text
-  m_timeTextDynamic.setString(m_stopwatch.getElapsedTime());
-
   m_window->draw(m_levelText);
   m_window->draw(m_timeTextStatic);
-  m_window->draw(m_timeTextDynamic);
   m_window->draw(m_mistakesTextDynamic);
   m_window->draw(m_mistakesTextStatic);
+
+  // time
+  m_timeTextDynamic.setString(m_stopwatch.getElapsedTime());
+  m_window->draw(m_timeTextDynamic);
+
+  // sudoku
+  for (int i = 0; i < NUM; i++) {
+    for (int j = 0; j < NUM; j++) {
+      m_window->draw(m_sudokuTexts[i][j]);
+    }
+  }
 
   // render buttons
   m_pauseBtn.Render(*m_window);
   m_undoBtn.Render(*m_window);
-  for (int i = 0; i < 9; i++) {
+  for (int i = 0; i < NUM; i++) {
     m_numBtns[i].Render(*m_window);
   }
 }
