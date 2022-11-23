@@ -34,9 +34,11 @@ class GameState {
   // sudoku
   SudokuGenerator* m_sudokuGenerator;
   int** m_generatedSudoku;
+  int m_solvedSudoku[NUM][NUM];
   SudokuButton m_sudokuTexts[NUM][NUM];
   int m_activeX;
   int m_activeY;
+  bool CheckIfSolved();
 
   sf::Texture m_sudokuGridTexture;
   sf::Sprite m_sudokuGridSprite;
@@ -70,6 +72,27 @@ class GameState {
 
   void Update();
   void Render();
+
+  ////////////////////////////////////
+  // SUDOKU SOLVER
+  ////////////////////////////////////
+  // Checks whether it will be legal to assign num to the given row, col
+  bool isSafe(int grid[NUM][NUM], int row, int col, int num);
+
+  /* Takes a partially filled-in grid and attempts to assign values to all
+   * unassigned locations in such a way to meet the requirements for Sudoku
+   * solution (non-duplication across rows, columns, and boxes) */
+  bool solveSudoku(int grid[NUM][NUM], int row, int col);
+
+  /* A utility function to print grid */
+  void print(int arr[NUM][NUM]) {
+    for (int i = 0; i < NUM; i++) {
+      for (int j = 0; j < NUM; j++) {
+        cout << arr[i][j] << " ";
+      }
+      cout << endl;
+    }
+  }
 };
 
 // constructor
@@ -181,13 +204,35 @@ void GameState::LoadSudoku(int empty) {
     for (int j = 0; j < NUM; j++) {
       int num = m_generatedSudoku[i][j];
 
+      m_solvedSudoku[j][i] = num;
+
       m_sudokuTexts[i][j].setNumber(num);
+      m_sudokuTexts[i][j].setStatus(num == 0 ? "not-active" : "untouchable");
       m_sudokuTexts[i][j].setSize({50, 50});
       m_sudokuTexts[i][j].setPosition({i * 50 + 75, j * 50 + 100});
     }
   }
+
+  print(m_solvedSudoku);
+  std::cout << std::endl;
+  solveSudoku(m_solvedSudoku, 0, 0);
+  print(m_solvedSudoku);
 }
 
+// ===========================================
+bool GameState::CheckIfSolved() {
+  bool isSolved = true;
+
+  for (int i = 0; i < NUM; i++) {
+    for (int j = 0; j < NUM; j++) {
+      if (std::to_string(m_solvedSudoku[j][i]) !=
+          m_sudokuTexts[i][j].getNumber()) {
+        isSolved = false;
+      }
+    }
+  }
+  return isSolved;
+}
 // ===========================================
 
 void GameState::Update() {
@@ -210,32 +255,37 @@ void GameState::Update() {
 
   for (int i = 0; i < NUM; i++) {
     for (int j = 0; j < NUM; j++) {
-      if (m_sudokuTexts[i][j].Clicked(*m_window)) {
-        m_sudokuTexts[m_activeX][m_activeY].setStatus("not-active");
-
-        m_activeX = i;
-        m_activeY = j;
-
-        m_sudokuTexts[i][j].setStatus("active");
-      }
-
-      // insert number
-      if (isClickedOnce) {
-        m_sudokuTexts[m_activeX][m_activeY].setNumber(m_clickedNum);
-        m_sudokuTexts[m_activeX][m_activeY].setTextPosition();
-
-        isClickedOnce = false;
-      }
-
       if (m_numBtns[i].Clicked(*m_window, *m_activeState)) {
         m_clickedNum = i + 1;
         isClickedOnce = true;
+      }
+
+      if (m_sudokuTexts[i][j].getStatus() != "untouchable") {
+        if (m_sudokuTexts[i][j].Clicked(*m_window)) {
+          m_sudokuTexts[m_activeX][m_activeY].setStatus("not-active");
+
+          m_activeX = i;
+          m_activeY = j;
+
+          m_sudokuTexts[i][j].setStatus("active");
+        }
+
+        // insert number
+        if (isClickedOnce) {
+          m_sudokuTexts[m_activeX][m_activeY].setNumber(m_clickedNum);
+          m_sudokuTexts[m_activeX][m_activeY].setTextPosition();
+
+          isClickedOnce = false;
+        }
       }
 
       // hover
       m_sudokuTexts[i][j].Hover(*m_window);
     }
   }
+
+  // check if solved
+  if (CheckIfSolved()) *m_activeState = MAIN_MENU_ID;
 }
 
 void GameState::Render() {
@@ -267,6 +317,88 @@ void GameState::Render() {
   for (int i = 0; i < NUM; i++) {
     m_numBtns[i].Render(*m_window);
   }
+}
+
+// ===========================================
+// SUDOKU SOLVER
+// ===========================================
+// Checks whether it will be legal to assign num to the given row, col
+bool GameState::isSafe(int grid[NUM][NUM], int row, int col, int num) {
+  // Check if we find the same num
+  // in the similar row , we
+  // return false
+  for (int x = 0; x <= 8; x++)
+    if (grid[row][x] == num) return false;
+
+  // Check if we find the same num in
+  // the similar column , we
+  // return false
+  for (int x = 0; x <= 8; x++)
+    if (grid[x][col] == num) return false;
+
+  // Check if we find the same num in
+  // the particular 3*3 matrix,
+  // we return false
+  int startRow = row - row % 3, startCol = col - col % 3;
+
+  for (int i = 0; i < 3; i++)
+    for (int j = 0; j < 3; j++)
+      if (grid[i + startRow][j + startCol] == num) return false;
+
+  return true;
+}
+
+/* Takes a partially filled-in grid and attempts to assign values to all
+ * unassigned locations in such a way to meet the requirements for Sudoku
+ * solution (non-duplication across rows, columns, and boxes) */
+bool GameState::solveSudoku(int grid[NUM][NUM], int row,
+                            int col) {  // Check if we have reached the 8th
+  // row and 9th column (0
+  // indexed matrix) , we are
+  // returning true to avoid
+  // further backtracking
+  if (row == NUM - 1 && col == NUM) return true;
+
+  // Check if column value becomes 9 ,
+  // we move to next row and
+  // column start from 0
+  if (col == NUM) {
+    row++;
+    col = 0;
+  }
+
+  // Check if the current position of
+  // the grid already contains
+  // value >0, we iterate for next column
+  if (grid[row][col] > 0) return solveSudoku(grid, row, col + 1);
+
+  for (int num = 1; num <= NUM; num++) {
+    // Check if it is safe to place
+    // the num (1-9) in the
+    // given row ,col ->we
+    // move to next column
+    if (isSafe(grid, row, col, num)) {
+      /* Assigning the num in
+              the current (row,col)
+              position of the grid
+              and assuming our assigned
+              num in the position
+              is correct	 */
+      grid[row][col] = num;
+
+      // Checking for next possibility with next
+      // column
+      if (solveSudoku(grid, row, col + 1)) return true;
+    }
+
+    // Removing the assigned num ,
+    // since our assumption
+    // was wrong , and we go for
+    // next assumption with
+    // diff num value
+    grid[row][col] = 0;
+  }
+  return false;
 }
 
 #endif

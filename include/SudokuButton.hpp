@@ -20,8 +20,12 @@ class SudokuButton {
   void setStatus(std::string status);
   void setTextPosition();
 
+  // getter function
+  std::string getStatus();
+  std::string getNumber();
+
   // button actions
-  void Hover(sf::RenderWindow &window, sf::Color color = sf::Color::Black);
+  void Hover(sf::RenderWindow &window);
   bool Clicked(sf::RenderWindow &window);
 
  private:
@@ -107,6 +111,8 @@ void SudokuButton::setStatus(std::string status) {
   } else if (m_status == "semi-active") {
     m_container.setFillColor(sf::Color(0, 0, 225, 70));
     m_container.setOutlineThickness(1);
+  } else if (m_status == "untouchable") {
+    m_text.setFillColor(sf::Color(0, 0, 85));
   }
 }
 
@@ -135,6 +141,12 @@ void SudokuButton::setColor(sf::Color color) { m_text.setFillColor(color); }
 void SudokuButton::setFontSize(int fontSize) {
   m_text.setCharacterSize(fontSize);
 }
+
+// ===========================================
+// GETTER FUNCTIONS
+// ===========================================
+std::string SudokuButton::getStatus() { return m_status; }
+std::string SudokuButton::getNumber() { return m_text.getString(); }
 
 // ===========================================
 // MOUSE ACTIONS (BOOLEANS)
@@ -167,9 +179,8 @@ bool SudokuButton::IsMouseUp(sf::RenderWindow &window) {
 // ===========================================
 // BUTTON ACTIONS
 // ===========================================
-void SudokuButton::Hover(sf::RenderWindow &window, sf::Color color) {
+void SudokuButton::Hover(sf::RenderWindow &window) {
   if (IsMouseOver(window)) {
-    m_text.setFillColor(color);
     m_overlay.setFillColor(sf::Color(0, 0, 0, 50));
   }
   if (!IsMouseOver(window)) {
