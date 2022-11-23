@@ -6,6 +6,7 @@
 #include "DEFINITIONS.hpp"
 #include "ImageButton.hpp"
 #include "NumberButton.hpp"
+#include "Stopwatch.hpp"
 #include "TextButton.hpp"
 
 class GameState {
@@ -16,6 +17,9 @@ class GameState {
 
   // font
   sf::Font m_font;
+
+  // stopwatch
+  Stopwatch m_stopwatch;
 
   // images
   sf::Texture m_bgTexture;
@@ -49,6 +53,7 @@ class GameState {
   void setWindow(sf::RenderWindow* window);
   void setActiveState(std::string* activeState);
   void setLevel(std::string level);
+  void setStopwatch(Stopwatch& stopwatch);
 
   void Update();
   void Render();
@@ -72,6 +77,8 @@ void GameState::setLevel(std::string level) {
   m_level = level;
   m_levelText.setString(level);
 }
+
+void GameState::setStopwatch(Stopwatch& stopwatch) { m_stopwatch = stopwatch; }
 
 // ===========================================
 // LOAD STUFFS
@@ -108,7 +115,7 @@ void GameState::LoadStatic() {
   m_timeTextStatic.setCharacterSize(20);
   m_timeTextStatic.setPosition(400, 75);
 
-  m_timeTextDynamic.setString("00:00");
+  m_timeTextDynamic.setString(m_stopwatch.getElapsedTime());
   m_timeTextDynamic.setFont(m_font);
   m_timeTextDynamic.setFillColor(sf::Color(151, 64, 64));
   m_timeTextDynamic.setCharacterSize(20);
@@ -167,6 +174,8 @@ void GameState::Render() {
   m_window->draw(m_titleSprite);
 
   // text
+  m_timeTextDynamic.setString(m_stopwatch.getElapsedTime());
+
   m_window->draw(m_levelText);
   m_window->draw(m_timeTextStatic);
   m_window->draw(m_timeTextDynamic);

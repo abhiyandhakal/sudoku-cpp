@@ -22,6 +22,9 @@ class Game {
   LevelsState m_levelsState;
   GameState m_gameState;
 
+  // stopwatch
+  Stopwatch m_stopwatch;
+
  public:
   Game(sf::Vector2f winSize = {200, 200}, std::string title = "",
        int framerateLimit = 60);
@@ -51,6 +54,7 @@ void Game::LoadStates() {
 
   m_gameState.setActiveState(&m_activeState);
   m_gameState.setWindow(&m_window);
+  m_gameState.setStopwatch(m_stopwatch);
 }
 
 void Game::HandleInputs() {
