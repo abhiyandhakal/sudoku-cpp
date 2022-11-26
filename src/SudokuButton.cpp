@@ -54,7 +54,7 @@ void SudokuButton::setStatus(std::string status) {
   m_status = status;
 
   if (m_status == "not-active") {
-    m_container.setFillColor(sf::Color::Transparent);
+    // m_container.setFillColor(sf::Color::Transparent);
     m_container.setOutlineThickness(0);
     m_text.setFillColor(m_setColor);
   }

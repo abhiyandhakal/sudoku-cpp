@@ -427,7 +427,7 @@ bool GameState::solveSudoku(int grid[NUM][NUM], int row,
 }
 
 /* A utility function to print grid */
-void print(int arr[NUM][NUM]) {
+void GameState::print(int arr[NUM][NUM]) {
   for (int i = 0; i < NUM; i++) {
     for (int j = 0; j < NUM; j++) {
       std::cout << arr[j][i] << " ";
