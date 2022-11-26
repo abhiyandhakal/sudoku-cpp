@@ -5,8 +5,6 @@ GameState::GameState(Stopwatch& stopwatch)
     : m_stopwatch(stopwatch),
       m_level("Easy"),
       m_mistakesCount(0),
-      m_activeX(0),
-      m_activeY(0),
       m_highlightedNum("") {
   LoadStatic();
   LoadBtns();
@@ -188,46 +186,55 @@ void GameState::Update(WinState& winState) {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1) ||
       sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad1)) {
     m_clickedNum = 1;
+    m_highlightedNum = "1";
     m_isClickedOnce = true;
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2) ||
       sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad2)) {
     m_clickedNum = 2;
+    m_highlightedNum = "2";
     m_isClickedOnce = true;
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3) ||
       sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad3)) {
     m_clickedNum = 3;
+    m_highlightedNum = "3";
     m_isClickedOnce = true;
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4) ||
       sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad4)) {
     m_clickedNum = 4;
+    m_highlightedNum = "4";
     m_isClickedOnce = true;
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5) ||
       sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad5)) {
     m_clickedNum = 5;
+    m_highlightedNum = "5";
     m_isClickedOnce = true;
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num6) ||
       sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad6)) {
     m_clickedNum = 6;
+    m_highlightedNum = "6";
     m_isClickedOnce = true;
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num7) ||
       sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad7)) {
     m_clickedNum = 7;
+    m_highlightedNum = "7";
     m_isClickedOnce = true;
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8) ||
       sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad8)) {
     m_clickedNum = 8;
+    m_highlightedNum = "8";
     m_isClickedOnce = true;
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num9) ||
       sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad9)) {
     m_clickedNum = 9;
+    m_highlightedNum = "9";
     m_isClickedOnce = true;
   }
 
@@ -235,6 +242,7 @@ void GameState::Update(WinState& winState) {
     for (int j = 0; j < NUM; j++) {
       if (m_numBtns[i].Clicked(*m_window, *m_activeState)) {
         m_clickedNum = i + 1;
+        m_highlightedNum = std::to_string(i + 1);
         m_isClickedOnce = true;
       }
 
