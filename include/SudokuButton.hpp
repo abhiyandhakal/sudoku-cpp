@@ -16,6 +16,7 @@ class SudokuButton {
   void setPosition(sf::Vector2f position);
   void setFont(std::string fontPath);
   void setColor(sf::Color color);
+  void setBg(sf::Color bg);
   void setFontSize(int fontSize);
   void setStatus(std::string status);
   void setTextPosition();
@@ -28,6 +29,7 @@ class SudokuButton {
   void Hover(sf::RenderWindow &window);
   bool Clicked(sf::RenderWindow &window);
   void Mistake(bool isCorrect);
+  void Highlight();
 
  private:
   sf::RectangleShape m_container;
@@ -102,20 +104,21 @@ void SudokuButton::Render(sf::RenderWindow &window) {
 // ===========================================
 void SudokuButton::setStatus(std::string status) {
   m_status = status;
+
   if (m_status == "not-active") {
     m_container.setFillColor(sf::Color::Transparent);
     m_container.setOutlineThickness(0);
     m_text.setFillColor(m_setColor);
-  } else if (m_status == "active") {
+  }
+  if (m_status == "active") {
     m_container.setFillColor(sf::Color(0, 165, 225));
     m_container.setOutlineColor(sf::Color(100, 100, 100));
     m_container.setOutlineThickness(2);
     m_text.setFillColor(m_setColor);
-  } else if (m_status == "semi-active") {
-    m_container.setFillColor(sf::Color(0, 0, 225, 70));
-    m_container.setOutlineThickness(1);
-  } else if (m_status == "untouchable") {
+  }
+  if (m_status == "untouchable") {
     m_text.setFillColor(sf::Color(0, 0, 85));
+    // m_container.setFillColor(sf::Color::Transparent);
   }
 }
 
@@ -143,6 +146,8 @@ void SudokuButton::setColor(sf::Color color) {
   m_text.setFillColor(color);
   m_setColor = color;
 }
+
+void SudokuButton::setBg(sf::Color bg) { m_container.setFillColor(bg); }
 
 void SudokuButton::setFontSize(int fontSize) {
   m_text.setCharacterSize(fontSize);
@@ -207,6 +212,10 @@ void SudokuButton::Mistake(bool isCorrect) {
     m_text.setFillColor(sf::Color(150, 0, 0));
   else
     setStatus(m_status);
+}
+
+void SudokuButton::Highlight() {
+  m_container.setFillColor(sf::Color(0, 0, 225, 70));
 }
 
 #endif

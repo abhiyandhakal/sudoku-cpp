@@ -43,6 +43,7 @@ class GameState {
   bool CheckIfCorrect(int i, int j);
   bool m_isClickedOnce = false;
   std::string m_wrongNumArr[NUM][NUM];
+  std::string m_highlightedNum;
 
   sf::Texture m_sudokuGridTexture;
   sf::Sprite m_sudokuGridSprite;
@@ -80,12 +81,7 @@ class GameState {
   ////////////////////////////////////
   // SUDOKU SOLVER
   ////////////////////////////////////
-  // Checks whether it will be legal to assign num to the given row, col
   bool isSafe(int grid[NUM][NUM], int row, int col, int num);
-
-  /* Takes a partially filled-in grid and attempts to assign values to all
-   * unassigned locations in such a way to meet the requirements for Sudoku
-   * solution (non-duplication across rows, columns, and boxes) */
   bool solveSudoku(int grid[NUM][NUM], int row, int col);
 
   /* A utility function to print grid */
@@ -105,7 +101,8 @@ GameState::GameState(Stopwatch& stopwatch)
       m_level("Easy"),
       m_mistakesCount(0),
       m_activeX(0),
-      m_activeY(0) {
+      m_activeY(0),
+      m_highlightedNum("") {
   LoadStatic();
   LoadBtns();
 }
@@ -336,6 +333,19 @@ void GameState::Update() {
         m_isClickedOnce = true;
       }
 
+      // highlight same numbers
+      if (m_sudokuTexts[i][j].getNumber() == m_highlightedNum &&
+          m_sudokuTexts[i][j].getNumber() != "") {
+        m_sudokuTexts[i][j].Highlight();
+      } else {
+        m_sudokuTexts[i][j].setBg(sf::Color::Transparent);
+      }
+
+      if (m_sudokuTexts[i][j].Clicked(*m_window)) {
+        m_highlightedNum = m_sudokuTexts[i][j].getNumber();
+      }
+
+      // clicking sudoku boxes
       if (m_sudokuTexts[i][j].getStatus() != "untouchable") {
         if (m_sudokuTexts[i][j].Clicked(*m_window)) {
           m_sudokuTexts[m_activeX][m_activeY].setStatus("not-active");
@@ -346,18 +356,23 @@ void GameState::Update() {
           m_sudokuTexts[i][j].setStatus("active");
         }
 
-        // insert number
         if (m_isClickedOnce) {
+          // insert number
           m_sudokuTexts[m_activeX][m_activeY].setNumber(m_clickedNum);
           m_sudokuTexts[m_activeX][m_activeY].setTextPosition();
+
+          // increase mistakes
           if (!CheckIfCorrect(m_activeX, m_activeY)) {
             if (m_wrongNumArr[m_activeX][m_activeY] !=
-                m_sudokuTexts[m_activeX][m_activeY].getNumber())
+                    m_sudokuTexts[m_activeX][m_activeY].getNumber() &&
+                m_sudokuTexts[m_activeX][m_activeY].getNumber() != "") {
               m_mistakesCount++;
 
-            m_wrongNumArr[m_activeX][m_activeY] =
-                m_sudokuTexts[m_activeX][m_activeY].getNumber();
+              m_wrongNumArr[m_activeX][m_activeY] =
+                  m_sudokuTexts[m_activeX][m_activeY].getNumber();
+            }
           }
+
           m_isClickedOnce = false;
         }
       }
@@ -485,8 +500,8 @@ bool GameState::solveSudoku(int grid[NUM][NUM], int row,
       if (solveSudoku(grid, row, col + 1)) return true;
     }
 
-    /* Removing the assigned num, since our assumption was wrong, and we go for
-     * next assumption with diff num value */
+    /* Removing the assigned num, since our assumption was wrong, and we go
+     * for next assumption with diff num value */
     grid[row][col] = 0;
   }
   return false;
