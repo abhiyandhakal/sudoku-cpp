@@ -56,5 +56,6 @@
 		"variant": "cpp",
 		"version": "cpp"
 	},
-	"terminal.integrated.shell.windows": "cmd.exe"
+	"terminal.integrated.shell.windows": "cmd.exe",
+	"C_Cpp.errorSquiggles": "enabled"
 }

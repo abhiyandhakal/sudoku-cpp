@@ -11,4 +11,6 @@
 #define WIN_ID "win"
 #define LOSE_ID "lose"
 
+#define NUM 9
+
 #endif

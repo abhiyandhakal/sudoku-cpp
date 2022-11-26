@@ -3,11 +3,9 @@
 
 #include "GameState.hpp"
 #include "LevelsState.hpp"
-#include "MainMenuState.hpp"
-// #include "WinState.hpp"
 // #include "LoseState.hpp"
-
-Stopwatch STOPWATCH;
+#include "MainMenuState.hpp"
+#include "WinState.hpp"
 
 class Game {
  private:
@@ -21,11 +19,13 @@ class Game {
   void Render();
   void LoadStates();
 
+  Stopwatch m_stopwatch;
+
   // states
   MainMenuState m_mainMenuState;
   LevelsState m_levelsState;
-  GameState m_gameState{STOPWATCH};
-  // WinState m_winState;
+  GameState m_gameState{m_stopwatch};
+  WinState m_winState;
   // LoseState m_loseState;
 
  public:
@@ -34,86 +34,5 @@ class Game {
 
   void Run();
 };
-
-Game::Game(sf::Vector2f winSize, std::string title, int framerateLimit)
-    : m_activeState(MAIN_MENU_ID) {
-  // smooth shapes
-  m_settings.antialiasingLevel = 8;
-
-  m_window.create(sf::VideoMode(winSize.x, winSize.y), title, sf::Style::Close,
-                  m_settings);
-
-  m_window.setFramerateLimit(framerateLimit);
-
-  LoadStates();
-}
-
-void Game::LoadStates() {
-  m_mainMenuState.setActiveState(&m_activeState);
-  m_mainMenuState.setWindow(&m_window);
-
-  m_levelsState.setActiveState(&m_activeState);
-  m_levelsState.setWindow(&m_window);
-
-  m_gameState.setActiveState(&m_activeState);
-  m_gameState.setWindow(&m_window);
-
-  // m_winState.setActiveState(&m_activeState);
-  // m_winState.setWindow(&m_window);
-
-  // m_loseState.setActiveState(&m_activeState);
-  // m_loseState.setWindow(&m_window);
-}
-
-void Game::HandleInputs() {
-  sf::Event event;
-
-  while (m_window.pollEvent(event)) {
-    switch (event.type) {
-      case sf::Event::Closed:
-        m_window.close();
-        break;
-
-      case sf::Event::LostFocus:
-        STOPWATCH.Pause();
-        break;
-
-      case sf::Event::GainedFocus:
-        if (m_activeState == GAME_ID) STOPWATCH.Resume();
-        break;
-
-      default:
-        break;
-    }
-  }
-}
-
-void Game::Update() {
-  if (m_activeState == MAIN_MENU_ID) m_mainMenuState.Update();
-  if (m_activeState == LEVELS_ID) m_levelsState.Update(m_gameState);
-  if (m_activeState == GAME_ID) m_gameState.Update();
-  // if (m_activeState == WIN_ID) m_winState.Update();
-  // if (m_activeState == LOSE_ID) m_loseState.Update();
-}
-
-void Game::Render() {
-  m_window.clear();
-
-  if (m_activeState == MAIN_MENU_ID) m_mainMenuState.Render();
-  if (m_activeState == LEVELS_ID) m_levelsState.Render();
-  if (m_activeState == GAME_ID) m_gameState.Render();
-  // if (m_activeState == WIN_ID) m_winState.Render();
-  // if (m_activeState == LOSE_ID) m_loseState.Render();
-
-  m_window.display();
-}
-
-void Game::Run() {
-  while (m_window.isOpen()) {
-    HandleInputs();
-    Render();
-    Update();
-  }
-}
 
 #endif

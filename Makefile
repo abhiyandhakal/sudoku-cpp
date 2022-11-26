@@ -1,5 +1,5 @@
 CXX		  := g++
-CXX_FLAGS := -Wall -Wextra -std=c++17 -ggdb
+CXX_FLAGS := -Wall -Wextra -Wno-unused-parameter -std=c++17 -ggdb
 
 BIN		:= bin
 SRC		:= src
@@ -9,8 +9,16 @@ LIB		:= lib
 LIBRARIES	:= -lsfml-graphics -lsfml-window -lsfml-system
 EXECUTABLE	:= main
 
+MKDIR_P = mkdir -p
 
-all: $(BIN)/$(EXECUTABLE)
+.PHONY: directories
+
+all: directories $(BIN)/$(EXECUTABLE)
+
+directories: ${BIN}
+
+${BIN}:
+	${MKDIR_P} ${BIN}
 
 run: clean all
 	clear
