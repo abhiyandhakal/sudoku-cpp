@@ -55,7 +55,7 @@ void Game::HandleInputs() {
 
 void Game::Update() {
   if (m_activeState == MAIN_MENU_ID) m_mainMenuState.Update();
-  if (m_activeState == LEVELS_ID) m_levelsState.Update(m_gameState);
+  if (m_activeState == LEVELS_ID) m_levelsState.Update(m_gameState, m_winState);
   if (m_activeState == GAME_ID) m_gameState.Update(m_winState);
   if (m_activeState == WIN_ID) m_winState.Update();
   // if (m_activeState == LOSE_ID) m_loseState.Update();

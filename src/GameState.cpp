@@ -121,10 +121,10 @@ void GameState::LoadSudoku(int empty) {
     }
   }
 
-  print(m_solvedSudoku);
+  PrintSudoku(m_solvedSudoku);
   std::cout << std::endl;
-  solveSudoku(m_solvedSudoku, 0, 0);
-  print(m_solvedSudoku);
+  SolveSudoku(m_solvedSudoku, 0, 0);
+  PrintSudoku(m_solvedSudoku);
 }
 
 // ===========================================
@@ -135,6 +135,141 @@ bool GameState::CheckIfCorrect(int i, int j) {
     isCorrect = false;
 
   return isCorrect;
+}
+// ===========================================
+
+int GameState::StringToSeconds(std::string time) {
+  int mins, secs;
+
+  std::string minsStr = time;
+  minsStr.erase(2, 3);
+
+  std::string secsStr = time;
+  secsStr.erase(0, 3);
+
+  std::stringstream ssoMins;
+  ssoMins << minsStr;
+  ssoMins >> mins;
+
+  std::stringstream ssoSecs;
+  ssoSecs << secsStr;
+  ssoSecs >> secs;
+
+  secs += mins * 60;
+
+  return secs;
+}
+
+// ===========================================
+void GameState::setHighscore() {
+  std::fstream highscoreFile;
+  std::string highscoreStr = "00:00";
+  int highscore = 0;
+
+  // easy level highscore
+  if (m_level == "Easy") {
+    // reading text file to get highscore
+    highscoreFile.open("db/highscore-easy.txt", std::ios::in);
+
+    if (highscoreFile.is_open()) {
+      getline(highscoreFile, highscoreStr);
+
+      highscore = StringToSeconds(highscoreStr);
+
+      highscoreFile.close();
+    }
+
+    // check if new record is made
+    if (StringToSeconds(m_timeTextDynamic.getString()) < highscore) {
+      highscoreFile.open("db/highscore-easy.txt", std::ios::out);
+
+      std::string newHighscoreStr = m_timeTextDynamic.getString();
+
+      if (highscoreFile.is_open()) {
+        highscoreFile << newHighscoreStr;  // set new highscore
+
+        highscoreFile.close();
+      }
+    }
+  }
+  // medium level highscore
+  if (m_level == "Medium") {
+    // reading text file to get highscore
+    highscoreFile.open("db/highscore-medium.txt", std::ios::in);
+
+    if (highscoreFile.is_open()) {
+      getline(highscoreFile, highscoreStr);
+
+      highscore = StringToSeconds(highscoreStr);
+
+      highscoreFile.close();
+    }
+
+    // check if new record is made
+    if (StringToSeconds(m_timeTextDynamic.getString()) < highscore) {
+      highscoreFile.open("db/highscore-medium.txt", std::ios::out);
+
+      std::string newHighscoreStr = m_timeTextDynamic.getString();
+
+      if (highscoreFile.is_open()) {
+        highscoreFile << newHighscoreStr;  // set new highscore
+
+        highscoreFile.close();
+      }
+    }
+  }
+  // hard level highscore
+  if (m_level == "Hard") {
+    // reading text file to get highscore
+    highscoreFile.open("db/highscore-hard.txt", std::ios::in);
+
+    if (highscoreFile.is_open()) {
+      getline(highscoreFile, highscoreStr);
+
+      highscore = StringToSeconds(highscoreStr);
+
+      highscoreFile.close();
+    }
+
+    // check if new record is made
+    if (StringToSeconds(m_timeTextDynamic.getString()) < highscore) {
+      highscoreFile.open("db/highscore-hard.txt", std::ios::out);
+
+      std::string newHighscoreStr = m_timeTextDynamic.getString();
+
+      if (highscoreFile.is_open()) {
+        highscoreFile << newHighscoreStr;  // set new highscore
+
+        highscoreFile.close();
+      }
+    }
+  }
+  // expert level highscore
+  if (m_level == "Expert") {
+    // reading text file to get highscore
+    highscoreFile.open("db/highscore-expert.txt", std::ios::in);
+
+    if (highscoreFile.is_open()) {
+      getline(highscoreFile, highscoreStr);
+
+      highscore = StringToSeconds(highscoreStr);
+
+      highscoreFile.close();
+    }
+
+    // check if new record is made
+    if (StringToSeconds(m_timeTextDynamic.getString()) < highscore) {
+      highscoreFile.open("db/highscore-expert.txt", std::ios::out);
+
+      std::string newHighscoreStr = m_timeTextDynamic.getString();
+
+      if (highscoreFile.is_open()) {
+        highscoreFile << newHighscoreStr;  // set new highscore
+
+        highscoreFile.close();
+      }
+    }
+  }
 }
 // ===========================================
 
@@ -297,7 +432,13 @@ void GameState::Update(WinState& winState) {
 
   // check if solved
   if (CheckIfSolved()) {
+    // sending elapsed time to win state
     winState.setElapsedTime(m_stopwatch.getElapsedTime());
+
+    // setting highscore if new high score is set
+    setHighscore();
+
+    // reseting the clock
     m_stopwatch.Reset();
     m_stopwatch.Pause();
 
@@ -359,7 +500,7 @@ void GameState::Render() {
 // SUDOKU SOLVER
 // ===========================================
 // Checks whether it will be legal to assign num to the given row, col
-bool GameState::isSafe(int grid[NUM][NUM], int row, int col, int num) {
+bool GameState::IsSafe(int grid[NUM][NUM], int row, int col, int num) {
   // Check if we find the same num
   // in the similar row , we
   // return false
@@ -387,7 +528,7 @@ bool GameState::isSafe(int grid[NUM][NUM], int row, int col, int num) {
 /* Takes a partially filled-in grid and attempts to assign values to all
  * unassigned locations in such a way to meet the requirements for Sudoku
  * solution (non-duplication across rows, columns, and boxes) */
-bool GameState::solveSudoku(int grid[NUM][NUM], int row,
+bool GameState::SolveSudoku(int grid[NUM][NUM], int row,
                             int col) {  // Check if we have reached the 8th
   // row and 9th column (0
   // indexed matrix) , we are
@@ -406,14 +547,14 @@ bool GameState::solveSudoku(int grid[NUM][NUM], int row,
   // Check if the current position of
   // the grid already contains
   // value >0, we iterate for next column
-  if (grid[row][col] > 0) return solveSudoku(grid, row, col + 1);
+  if (grid[row][col] > 0) return SolveSudoku(grid, row, col + 1);
 
   for (int num = 1; num <= NUM; num++) {
     // Check if it is safe to place
     // the num (1-9) in the
     // given row ,col ->we
     // move to next column
-    if (isSafe(grid, row, col, num)) {
+    if (IsSafe(grid, row, col, num)) {
       /* Assigning the num in
               the current (row,col)
               position of the grid
@@ -424,7 +565,7 @@ bool GameState::solveSudoku(int grid[NUM][NUM], int row,
 
       // Checking for next possibility with next
       // column
-      if (solveSudoku(grid, row, col + 1)) return true;
+      if (SolveSudoku(grid, row, col + 1)) return true;
     }
 
     /* Removing the assigned num, since our assumption was wrong, and we go
@@ -435,7 +576,7 @@ bool GameState::solveSudoku(int grid[NUM][NUM], int row,
 }
 
 /* A utility function to print grid */
-void GameState::print(int arr[NUM][NUM]) {
+void GameState::PrintSudoku(int arr[NUM][NUM]) {
   for (int i = 0; i < NUM; i++) {
     for (int j = 0; j < NUM; j++) {
       std::cout << arr[j][i] << " ";

@@ -35,7 +35,7 @@ class LevelsState {
   void setWindow(sf::RenderWindow* window);
   void setActiveState(std::string* activeState);
 
-  void Update(GameState& gameState);
+  void Update(GameState& gameState, WinState& winState);
   void Render();
 };
 

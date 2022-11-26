@@ -1,8 +1,6 @@
 #ifndef GAME_STATE_HPP
 #define GAME_STATE_HPP
 
-#include <sstream>
-
 #include "NumberButton.hpp"
 #include "Stopwatch.hpp"
 #include "SudokuButton.hpp"
@@ -24,10 +22,6 @@ class GameState {
   // stopwatch
   Stopwatch& m_stopwatch;
 
-  // images
-  sf::Texture m_bgTexture;
-  sf::Sprite m_bgSprite;
-
   // sudoku
   SudokuGenerator* m_sudokuGenerator;
   int** m_generatedSudoku;
@@ -41,6 +35,14 @@ class GameState {
   bool m_isClickedOnce = false;
   std::string m_wrongNumArr[NUM][NUM];
   std::string m_highlightedNum;
+
+  // highscore
+  int StringToSeconds(std::string time);
+  void setHighscore();
+
+  // images
+  sf::Texture m_bgTexture;
+  sf::Sprite m_bgSprite;
 
   sf::Texture m_sudokuGridTexture;
   sf::Sprite m_sudokuGridSprite;
@@ -78,11 +80,11 @@ class GameState {
   ////////////////////////////////////
   // SUDOKU SOLVER
   ////////////////////////////////////
-  bool isSafe(int grid[NUM][NUM], int row, int col, int num);
-  bool solveSudoku(int grid[NUM][NUM], int row, int col);
+  bool IsSafe(int grid[NUM][NUM], int row, int col, int num);
+  bool SolveSudoku(int grid[NUM][NUM], int row, int col);
 
   /* A utility function to print grid */
-  void print(int arr[NUM][NUM]);
+  void PrintSudoku(int arr[NUM][NUM]);
 };
 
 #endif
