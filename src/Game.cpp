@@ -10,6 +10,14 @@ Game::Game(sf::Vector2f winSize, std::string title, int framerateLimit)
 
   m_window.setFramerateLimit(framerateLimit);
 
+  // set icon
+  auto image = sf::Image{};
+  if (!image.loadFromFile("assets/images/icon.png")) {
+    std::cout << "Error loading icon\n";
+  }
+
+  m_window.setIcon(image.getSize().x, image.getSize().y, image.getPixelsPtr());
+
   LoadStates();
 }
 

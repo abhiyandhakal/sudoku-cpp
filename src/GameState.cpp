@@ -163,7 +163,7 @@ int GameState::StringToSeconds(std::string time) {
 // ===========================================
 void GameState::setHighscore() {
   std::fstream highscoreFile;
-  std::string highscoreStr = "00:00";
+  std::string highscoreStr = "59:59";
   int highscore = 0;
 
   // easy level highscore

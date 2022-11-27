@@ -3,7 +3,7 @@
 // ===========================================
 // CONSTRUCTOR
 // ===========================================
-WinState::WinState() : m_highscoreTime("00:00"), m_elapsedTime("00:00") {
+WinState::WinState() : m_highscoreTime("59:59"), m_elapsedTime("00:00") {
   LoadStatic();
   LoadBtns();
 }
