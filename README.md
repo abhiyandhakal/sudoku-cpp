@@ -16,4 +16,4 @@ Now, open the **sudoku-cpp** directory in the terminal and run the following com
 make run
 ```
 
-Note: _The development process is still in process._
+Note: _The development is still in process._
