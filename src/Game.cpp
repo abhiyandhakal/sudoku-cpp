@@ -41,6 +41,9 @@ void Game::LoadStates() {
 
   m_pauseState.setActiveState(&m_activeState);
   m_pauseState.setWindow(&m_window);
+
+  m_highscoreState.setActiveState(&m_activeState);
+  m_highscoreState.setWindow(&m_window);
 }
 
 void Game::HandleInputs() {
@@ -74,6 +77,7 @@ void Game::Update() {
   if (m_activeState == WIN_ID) m_winState.Update();
   if (m_activeState == LOSE_ID) m_loseState.Update();
   if (m_activeState == PAUSE_ID) m_pauseState.Update();
+  if (m_activeState == HIGHSCORE_ID) m_highscoreState.Update();
 }
 
 void Game::Render() {
@@ -85,6 +89,7 @@ void Game::Render() {
   if (m_activeState == WIN_ID) m_winState.Render();
   if (m_activeState == LOSE_ID) m_loseState.Render();
   if (m_activeState == PAUSE_ID) m_pauseState.Render();
+  if (m_activeState == HIGHSCORE_ID) m_highscoreState.Render();
 
   m_window.display();
 }

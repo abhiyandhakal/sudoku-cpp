@@ -68,7 +68,7 @@ void MainMenuState::Update() {
   // clicking the buttons
   m_newGameBtn.Clicked(*m_window, *m_activeState, LEVELS_ID);
   m_howToPlayBtn.Clicked(*m_window, *m_activeState, HOW_TO_PLAY_ID);
-  m_highScoreBtn.Clicked(*m_window, *m_activeState, HIGH_SCORE_ID);
+  m_highScoreBtn.Clicked(*m_window, *m_activeState, HIGHSCORE_ID);
   m_exitBtn.Clicked(*m_window, *m_activeState, EXIT_ID);
 }
 

@@ -2,6 +2,7 @@
 #define GAME_HPP
 
 #include "GameState.hpp"
+#include "HighscoreState.hpp"
 #include "LevelsState.hpp"
 #include "LoseState.hpp"
 #include "MainMenuState.hpp"
@@ -29,6 +30,7 @@ class Game {
   PauseState m_pauseState{m_stopwatch};
   WinState m_winState;
   LoseState m_loseState;
+  HighScoreState m_highscoreState;
 
  public:
   Game(sf::Vector2f winSize = {200, 200}, std::string title = "",
