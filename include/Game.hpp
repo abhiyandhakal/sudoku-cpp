@@ -3,8 +3,9 @@
 
 #include "GameState.hpp"
 #include "LevelsState.hpp"
-// #include "LoseState.hpp"
+#include "LoseState.hpp"
 #include "MainMenuState.hpp"
+#include "PauseState.hpp"
 #include "WinState.hpp"
 
 class Game {
@@ -25,8 +26,9 @@ class Game {
   MainMenuState m_mainMenuState;
   LevelsState m_levelsState;
   GameState m_gameState{m_stopwatch};
+  PauseState m_pauseState{m_stopwatch};
   WinState m_winState;
-  // LoseState m_loseState;
+  LoseState m_loseState;
 
  public:
   Game(sf::Vector2f winSize = {200, 200}, std::string title = "",

@@ -1,6 +1,7 @@
 #ifndef GAME_STATE_HPP
 #define GAME_STATE_HPP
 
+#include "LoseState.hpp"
 #include "NumberButton.hpp"
 #include "Stopwatch.hpp"
 #include "SudokuButton.hpp"
@@ -74,7 +75,7 @@ class GameState {
   void setActiveState(std::string* activeState);
   void setLevel(std::string level);
 
-  void Update(WinState& winState);
+  void Update(WinState& winState, LoseState& loseState);
   void Render();
 
   ////////////////////////////////////
@@ -82,9 +83,6 @@ class GameState {
   ////////////////////////////////////
   bool IsSafe(int grid[NUM][NUM], int row, int col, int num);
   bool SolveSudoku(int grid[NUM][NUM], int row, int col);
-
-  /* A utility function to print grid */
-  void PrintSudoku(int arr[NUM][NUM]);
 };
 
 #endif

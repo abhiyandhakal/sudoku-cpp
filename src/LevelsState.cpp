@@ -59,7 +59,8 @@ void LevelsState::LoadBtns() {
   m_expertBtn.setPosition({235, 502});
 }
 
-void LevelsState::Update(GameState& gameState, WinState& winState) {
+void LevelsState::Update(GameState& gameState, WinState& winState,
+                         LoseState& loseState) {
   // hovering the buttons
   m_backBtn.Hover(*m_window);
   m_easyBtn.Hover(*m_window);
@@ -74,18 +75,22 @@ void LevelsState::Update(GameState& gameState, WinState& winState) {
   if (m_easyBtn.Clicked(*m_window, *m_activeState, GAME_ID)) {
     gameState.setLevel("Easy");
     winState.setLevel("Easy");
+    loseState.setLevel("Easy");
   }
   if (m_mediumBtn.Clicked(*m_window, *m_activeState, GAME_ID)) {
     gameState.setLevel("Medium");
     winState.setLevel("Medium");
+    loseState.setLevel("Medium");
   }
   if (m_hardBtn.Clicked(*m_window, *m_activeState, GAME_ID)) {
     gameState.setLevel("Hard");
     winState.setLevel("Hard");
+    loseState.setLevel("Hard");
   }
   if (m_expertBtn.Clicked(*m_window, *m_activeState, GAME_ID)) {
     gameState.setLevel("Expert");
     winState.setLevel("Expert");
+    loseState.setLevel("Hard");
   }
 }
 

@@ -1,17 +1,20 @@
-#ifndef LEVELS_HPP
-#define LEVELS_HPP
+#ifndef PAUSE_STATE_HPP
+#define PAUSE_STATE_HPP
 
 #include "DEFINITIONS.hpp"
-#include "GameState.hpp"
-#include "ImageButton.hpp"
+#include "Stopwatch.hpp"
 #include "TextButton.hpp"
 
-class LevelsState {
+class PauseState {
  private:
   sf::RenderWindow* m_window;
   std::string* m_activeState;
 
+  // font
   sf::Font m_font;
+
+  // stopwatch
+  Stopwatch& m_stopwatch;
 
   // image
   sf::Texture m_bgTexture;
@@ -21,21 +24,20 @@ class LevelsState {
   sf::Text m_title;
 
   // buttons
-  ImageButton m_backBtn;
-  TextButton m_easyBtn, m_mediumBtn, m_hardBtn, m_expertBtn;
+  TextButton m_resumeBtn, m_quitBtn;
 
   // load stuff
   void LoadStatic();
   void LoadBtns();
 
  public:
-  LevelsState();
+  PauseState(Stopwatch& stopwatch);
 
   // setters
   void setWindow(sf::RenderWindow* window);
   void setActiveState(std::string* activeState);
 
-  void Update(GameState& gameState, WinState& winState, LoseState& LoseState);
+  void Update();
   void Render();
 };
 

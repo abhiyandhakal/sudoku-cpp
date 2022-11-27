@@ -121,10 +121,8 @@ void GameState::LoadSudoku(int empty) {
     }
   }
 
-  PrintSudoku(m_solvedSudoku);
   std::cout << std::endl;
   SolveSudoku(m_solvedSudoku, 0, 0);
-  PrintSudoku(m_solvedSudoku);
 }
 
 // ===========================================
@@ -290,7 +288,7 @@ bool GameState::CheckIfSolved() {
 // ===========================================
 
 // ===========================================
-void GameState::Update(WinState& winState) {
+void GameState::Update(WinState& winState, LoseState& loseState) {
   // starting the stopwatch
   m_stopwatch.Resume();
   m_timeTextDynamic.setString(m_stopwatch.getElapsedTime());
@@ -306,7 +304,8 @@ void GameState::Update(WinState& winState) {
   }
 
   // clicking the buttons
-  m_pauseBtn.Clicked(*m_window, *m_activeState, PAUSE_ID);
+  if (m_pauseBtn.Clicked(*m_window, *m_activeState, PAUSE_ID))
+    m_stopwatch.Pause();
   if (m_eraseBtn.Clicked(*m_window, *m_activeState)) {
     m_clickedNum = 0;
     m_isClickedOnce = true;
@@ -460,7 +459,6 @@ void GameState::Update(WinState& winState) {
 
     // changing state
     *m_activeState = LOSE_ID;
-    *m_activeState = WIN_ID;
   }
 }
 
@@ -573,14 +571,4 @@ bool GameState::SolveSudoku(int grid[NUM][NUM], int row,
     grid[row][col] = 0;
   }
   return false;
-}
-
-/* A utility function to print grid */
-void GameState::PrintSudoku(int arr[NUM][NUM]) {
-  for (int i = 0; i < NUM; i++) {
-    for (int j = 0; j < NUM; j++) {
-      std::cout << arr[j][i] << " ";
-    }
-    std::cout << std::endl;
-  }
 }

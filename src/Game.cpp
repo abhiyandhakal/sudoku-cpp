@@ -11,12 +11,14 @@ Game::Game(sf::Vector2f winSize, std::string title, int framerateLimit)
   m_window.setFramerateLimit(framerateLimit);
 
   // set icon
+  /////////////////////////////////////////////////////////
   auto image = sf::Image{};
   if (!image.loadFromFile("assets/images/icon.png")) {
     std::cout << "Error loading icon\n";
   }
 
   m_window.setIcon(image.getSize().x, image.getSize().y, image.getPixelsPtr());
+  /////////////////////////////////////////////////////////
 
   LoadStates();
 }
@@ -34,8 +36,11 @@ void Game::LoadStates() {
   m_winState.setActiveState(&m_activeState);
   m_winState.setWindow(&m_window);
 
-  // m_loseState.setActiveState(&m_activeState);
-  // m_loseState.setWindow(&m_window);
+  m_loseState.setActiveState(&m_activeState);
+  m_loseState.setWindow(&m_window);
+
+  m_pauseState.setActiveState(&m_activeState);
+  m_pauseState.setWindow(&m_window);
 }
 
 void Game::HandleInputs() {
@@ -63,10 +68,12 @@ void Game::HandleInputs() {
 
 void Game::Update() {
   if (m_activeState == MAIN_MENU_ID) m_mainMenuState.Update();
-  if (m_activeState == LEVELS_ID) m_levelsState.Update(m_gameState, m_winState);
-  if (m_activeState == GAME_ID) m_gameState.Update(m_winState);
+  if (m_activeState == LEVELS_ID)
+    m_levelsState.Update(m_gameState, m_winState, m_loseState);
+  if (m_activeState == GAME_ID) m_gameState.Update(m_winState, m_loseState);
   if (m_activeState == WIN_ID) m_winState.Update();
-  // if (m_activeState == LOSE_ID) m_loseState.Update();
+  if (m_activeState == LOSE_ID) m_loseState.Update();
+  if (m_activeState == PAUSE_ID) m_pauseState.Update();
 }
 
 void Game::Render() {
@@ -76,7 +83,8 @@ void Game::Render() {
   if (m_activeState == LEVELS_ID) m_levelsState.Render();
   if (m_activeState == GAME_ID) m_gameState.Render();
   if (m_activeState == WIN_ID) m_winState.Render();
-  // if (m_activeState == LOSE_ID) m_loseState.Render();
+  if (m_activeState == LOSE_ID) m_loseState.Render();
+  if (m_activeState == PAUSE_ID) m_pauseState.Render();
 
   m_window.display();
 }
