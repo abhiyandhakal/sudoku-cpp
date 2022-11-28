@@ -31,6 +31,13 @@ void HighScoreState::LoadStatic() {
   // ===========================================
   // TEXT
   // ===========================================
+  // state title
+  m_title.setString("Difficulty Level");
+  m_title.setFont(m_font);
+  m_title.setFillColor(sf::Color::Black);
+  m_title.setCharacterSize(48);
+  m_title.setPosition({169, 94});
+
   // "levels" text
   m_levelsTextStatic.setString("Levels");
   m_levelsTextStatic.setFont(m_fontBold);
@@ -81,6 +88,10 @@ void HighScoreState::LoadBtns() {
     m_resetBtns[i].setImage("assets/images/reset.png");
     m_resetBtns[i].setPosition({395, 338 + 62 * i});
   }
+
+  // back button
+  m_backBtn.setImage("assets/images/back.png");
+  m_backBtn.setPosition({25, 25});
 }
 
 // ===========================================
@@ -152,9 +163,6 @@ void HighScoreState::Update() {
 }
 
 void HighScoreState::Render() {
-  // shapes
-  m_window->draw(m_line);
-
   // images
   m_window->draw(m_bgSprite);
   m_window->draw(m_captionSprite);
@@ -163,6 +171,9 @@ void HighScoreState::Render() {
   m_window->draw(m_title);
   m_window->draw(m_levelsTextStatic);
   m_window->draw(m_highscoreTextStatic);
+
+  // shapes
+  m_window->draw(m_line);
 
   // buttons
   m_backBtn.Render(*m_window);
