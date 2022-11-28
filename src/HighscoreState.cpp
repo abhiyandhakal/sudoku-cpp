@@ -32,8 +32,8 @@ void HighScoreState::LoadStatic() {
   // TEXT
   // ===========================================
   // state title
-  m_title.setString("Difficulty Level");
-  m_title.setFont(m_font);
+  m_title.setString("Highscore");
+  m_title.setFont(m_fontBold);
   m_title.setFillColor(sf::Color::Black);
   m_title.setCharacterSize(48);
   m_title.setPosition({169, 94});
