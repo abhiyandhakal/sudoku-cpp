@@ -47,15 +47,15 @@ void HowToPlayState::Update() {
   else {
     // changing active image num
     if (m_backBtn.Clicked(*m_window, *m_activeState)) {
-      std::cout << m_activeImageNum << std::endl;
       m_activeImageNum--;
     }
   }
 
-  // forward btn
-  if (m_forwardBtn.Clicked(*m_window, *m_activeState)) {
-    m_activeImageNum++;
-    std::cout << m_activeImageNum << std::endl;
+  if (m_activeImageNum < sizeof(m_sprites) / sizeof(*m_sprites) - 1) {
+    // forward btn
+    if (m_forwardBtn.Clicked(*m_window, *m_activeState)) {
+      m_activeImageNum++;
+    }
   }
 }
 
