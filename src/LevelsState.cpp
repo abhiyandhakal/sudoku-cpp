@@ -74,21 +74,29 @@ void LevelsState::Update(GameState& gameState, WinState& winState,
   // levels buttons
   if (m_easyBtn.Clicked(*m_window, *m_activeState, GAME_ID)) {
     gameState.setLevel("Easy");
+    gameState.ResumeStopwatch();
+
     winState.setLevel("Easy");
     loseState.setLevel("Easy");
   }
   if (m_mediumBtn.Clicked(*m_window, *m_activeState, GAME_ID)) {
     gameState.setLevel("Medium");
+    gameState.ResumeStopwatch();
+
     winState.setLevel("Medium");
     loseState.setLevel("Medium");
   }
   if (m_hardBtn.Clicked(*m_window, *m_activeState, GAME_ID)) {
     gameState.setLevel("Hard");
+    gameState.ResumeStopwatch();
+
     winState.setLevel("Hard");
     loseState.setLevel("Hard");
   }
   if (m_expertBtn.Clicked(*m_window, *m_activeState, GAME_ID)) {
     gameState.setLevel("Expert");
+    gameState.ResumeStopwatch();
+
     winState.setLevel("Expert");
     loseState.setLevel("Hard");
   }

@@ -54,7 +54,8 @@
 		"mutex": "cpp",
 		"ratio": "cpp",
 		"variant": "cpp",
-		"version": "cpp"
+		"version": "cpp",
+		"sstream": "cpp"
 	},
 	"terminal.integrated.shell.windows": "cmd.exe",
 	"C_Cpp.errorSquiggles": "enabled"

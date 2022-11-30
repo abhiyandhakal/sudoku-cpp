@@ -23,19 +23,45 @@ class GameState {
   // stopwatch
   Stopwatch& m_stopwatch;
 
-  // sudoku
+  // sudoku grid position
+  sf::Vector2f m_gridPos;
+
+  // for the functionality when window loses and gains focus
+  bool m_lostFocus, m_gainedFocus;
+
+  // sudoku generator object
   SudokuGenerator* m_sudokuGenerator;
+
+  // stores int sudoku
   int** m_generatedSudoku;
+
+  // sudoku solved by the solver
   int m_solvedSudoku[NUM][NUM];
+
+  // display of numbers and interactive buttons
   SudokuButton m_sudokuTexts[NUM][NUM];
+
+  // current selected element's position in grid
   int m_activeX;
   int m_activeY;
+
   int m_mistakesCount;
+
+  // check for mistakes
   bool CheckIfSolved();
   bool CheckIfCorrect(int i, int j);
+
   bool m_isClickedOnce = false;
+
+  // for mistakes visual representation and mistakes count
   std::string m_wrongNumArr[NUM][NUM];
+
+  // clicked number
   std::string m_highlightedNum;
+
+  // for keyboard navigation
+  sf::RectangleShape m_navRect;
+  int m_rectX, m_rectY;
 
   // highscore
   int StringToSeconds(std::string time);
@@ -74,6 +100,9 @@ class GameState {
   void setWindow(sf::RenderWindow* window);
   void setActiveState(std::string* activeState);
   void setLevel(std::string level);
+
+  void PauseStopwatch();
+  void ResumeStopwatch();
 
   void Update(WinState& winState, LoseState& loseState);
   void Render();

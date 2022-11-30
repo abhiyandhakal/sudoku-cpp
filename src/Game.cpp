@@ -59,11 +59,11 @@ void Game::HandleInputs() {
         break;
 
       case sf::Event::LostFocus:
-        m_stopwatch.Pause();
+        m_gameState.PauseStopwatch();
         break;
 
       case sf::Event::GainedFocus:
-        if (m_activeState == GAME_ID) m_stopwatch.Resume();
+        if (m_activeState == GAME_ID) m_gameState.ResumeStopwatch();
         break;
 
       default:

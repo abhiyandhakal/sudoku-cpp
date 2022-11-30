@@ -5,7 +5,17 @@ GameState::GameState(Stopwatch& stopwatch)
     : m_stopwatch(stopwatch),
       m_level("Easy"),
       m_mistakesCount(0),
-      m_highlightedNum("") {
+      m_gridPos({75, 100}),
+      m_highlightedNum(""),
+      m_lostFocus(false),
+      m_gainedFocus(true) {
+  // initial position
+  int m_rectX = m_gridPos.x;
+  int m_rectY = m_gridPos.y;
+
+  m_navRect.setPosition(m_gridPos);
+  m_navRect.setSize({50, 50});
+
   LoadStatic();
   LoadBtns();
 }
@@ -44,7 +54,7 @@ void GameState::LoadStatic() {
   // sudoku grid
   m_sudokuGridTexture.loadFromFile("assets/images/sudoku-grid.png");
   m_sudokuGridSprite.setTexture(m_sudokuGridTexture);
-  m_sudokuGridSprite.setPosition({75, 100});
+  m_sudokuGridSprite.setPosition(m_gridPos);
 
   m_titleTexture.loadFromFile("assets/images/SUDOKU.png");
   m_titleSprite.setTexture(m_titleTexture);
@@ -287,8 +297,39 @@ bool GameState::CheckIfSolved() {
 }
 // ===========================================
 
+void GameState::PauseStopwatch() {
+  m_lostFocus = true;
+  m_gainedFocus = false;
+}
+
+void GameState::ResumeStopwatch() {
+  m_lostFocus = false;
+  m_gainedFocus = true;
+}
+
 // ===========================================
 void GameState::Update(WinState& winState, LoseState& loseState) {
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+    if (m_rectX > m_gridPos.x) m_rectX -= 50;
+    std::cout << m_rectX << ", " << m_rectY << std::endl;
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+    if (m_rectX < (m_gridPos.x + m_sudokuGridSprite.getGlobalBounds().width))
+      m_rectX += 50;
+    std::cout << m_rectX << ", " << m_rectY << std::endl;
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+    if (m_rectY < m_gridPos.y + m_sudokuGridSprite.getGlobalBounds().height)
+      m_rectY += 50;
+    std::cout << m_rectX << ", " << m_rectY << std::endl;
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+    if (m_rectY > m_gridPos.y) m_rectY -= 50;
+    std::cout << m_rectX << ", " << m_rectY << std::endl;
+  }
+
+  m_navRect.setPosition(m_rectX, m_rectY);
+
   // starting the stopwatch
   m_stopwatch.Resume();
   m_timeTextDynamic.setString(m_stopwatch.getElapsedTime());
@@ -393,7 +434,7 @@ void GameState::Update(WinState& winState, LoseState& loseState) {
       }
 
       // clicking sudoku boxes
-      if (m_sudokuTexts[i][j].getStatus() != "untouchable") {
+      if (m_sudokuTexts[i][j].getStatus() != "untouchable" && !m_lostFocus) {
         if (m_sudokuTexts[i][j].Clicked(*m_window)) {
           m_sudokuTexts[m_activeX][m_activeY].setStatus("not-active");
 
@@ -459,6 +500,15 @@ void GameState::Update(WinState& winState, LoseState& loseState) {
 
     // changing state
     *m_activeState = LOSE_ID;
+  }
+
+  // if the window loses focus
+  if (m_lostFocus) {
+    m_stopwatch.Pause();
+    m_highlightedNum = "";
+
+  } else if (m_gainedFocus) {
+    m_stopwatch.Resume();
   }
 }
 
