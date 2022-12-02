@@ -1,6 +1,8 @@
 #include "ImageButton.hpp"
 
-ImageButton::ImageButton() { m_overlay.setFillColor(sf::Color::Transparent); }
+ImageButton::ImageButton() : MY_PATH(PATH) {
+  m_overlay.setFillColor(sf::Color::Transparent);
+}
 
 void ImageButton::setOverlay() {
   float sizeX = m_sprite.getGlobalBounds().width;
@@ -66,7 +68,7 @@ bool ImageButton::Clicked(sf::RenderWindow &window, std::string &activeState,
   if (IsMouseUp(window)) {
     m_clickedOnce = false;
 
-    if (id == "exit") {
+    if (id == EXIT_ID) {
       window.close();
     } else if (id != "") {
       activeState = id;

@@ -3,7 +3,7 @@
 // ===========================================
 // CONSTRUCTORS
 // ===========================================
-MainMenuState::MainMenuState() {
+MainMenuState::MainMenuState() : MY_PATH(PATH) {
   LoadStatic();
   LoadBtns();
 }
@@ -24,8 +24,8 @@ void MainMenuState::setActiveState(std::string* activeState) {
 // images
 void MainMenuState::LoadStatic() {
   // load textures
-  m_bgTexture.loadFromFile("assets/images/background.png");
-  m_logoTexture.loadFromFile("assets/images/logo.png");
+  m_bgTexture.loadFromFile(MY_PATH + "assets/images/background.png");
+  m_logoTexture.loadFromFile(MY_PATH + "assets/images/logo.png");
 
   // sprites
   m_bgSprite.setTexture(m_bgTexture);

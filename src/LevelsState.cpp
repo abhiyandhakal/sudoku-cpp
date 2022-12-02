@@ -1,7 +1,7 @@
 #include "LevelsState.hpp"
 
 // constructor
-LevelsState::LevelsState() {
+LevelsState::LevelsState() : MY_PATH(PATH) {
   LoadStatic();
   LoadBtns();
 }
@@ -19,11 +19,11 @@ void LevelsState::setActiveState(std::string* activeState) {
 // static
 void LevelsState::LoadStatic() {
   // background image
-  m_bgTexture.loadFromFile("assets/images/background.png");
+  m_bgTexture.loadFromFile(MY_PATH + "assets/images/background.png");
   m_bgSprite.setTexture(m_bgTexture);
 
   // font
-  m_font.loadFromFile("assets/fonts/Inter/static/Inter-Bold.ttf");
+  m_font.loadFromFile(MY_PATH + "assets/fonts/Inter/static/Inter-Bold.ttf");
 
   // text
   m_title.setString("Difficulty Level");
@@ -35,7 +35,7 @@ void LevelsState::LoadStatic() {
 
 void LevelsState::LoadBtns() {
   // back button
-  m_backBtn.setImage("assets/images/back.png");
+  m_backBtn.setImage(MY_PATH + "assets/images/back.png");
   m_backBtn.setPosition({54, 20});
 
   // easy button

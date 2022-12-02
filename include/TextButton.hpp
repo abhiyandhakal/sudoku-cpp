@@ -5,6 +5,8 @@
 #include <cstdlib>
 #include <iostream>
 
+#include "DEFINITIONS.hpp"
+
 class TextButton {
  public:
   TextButton();
@@ -33,6 +35,8 @@ class TextButton {
   sf::CircleShape m_right;
   sf::Text m_text;
   sf::Font m_font;
+
+  std::string MY_PATH;
 
   // mouse actions (booleans)
   bool IsMouseOver(sf::RenderWindow &window);  // hover

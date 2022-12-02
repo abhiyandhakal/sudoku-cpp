@@ -1,7 +1,7 @@
 #include "HighscoreState.hpp"
 
 HighScoreState::HighScoreState()
-    : m_highscore({"59:59", "59:59", "59:59", "59:59"}) {
+    : m_highscore({"59:59", "59:59", "59:59", "59:59"}), MY_PATH(PATH) {
   LoadStatic();
   LoadBtns();
 }
@@ -12,16 +12,17 @@ HighScoreState::HighScoreState()
 void HighScoreState::LoadStatic() {
   // IMAGES
   // background image
-  m_bgTexture.loadFromFile("assets/images/background.png");
+  m_bgTexture.loadFromFile(MY_PATH + "assets/images/background.png");
   m_bgSprite.setTexture(m_bgTexture);
 
-  m_captionTexture.loadFromFile("assets/images/highscore-subtitle.png");
+  m_captionTexture.loadFromFile(MY_PATH +
+                                "assets/images/highscore-subtitle.png");
   m_captionSprite.setTexture(m_captionTexture);
   m_captionSprite.setPosition(99, 159);
 
   // font
-  m_font.loadFromFile("assets/fonts/Inter/static/Inter-Regular.ttf");
-  m_fontBold.loadFromFile("assets/fonts/Inter/static/Inter-Bold.ttf");
+  m_font.loadFromFile(MY_PATH + "assets/fonts/Inter/static/Inter-Regular.ttf");
+  m_fontBold.loadFromFile(MY_PATH + "assets/fonts/Inter/static/Inter-Bold.ttf");
 
   // shapes
   m_line.setSize({275, 2});
@@ -85,12 +86,12 @@ void HighScoreState::LoadStatic() {
 void HighScoreState::LoadBtns() {
   // reset buttons
   for (int i = 0; i < 4; i++) {
-    m_resetBtns[i].setImage("assets/images/reset.png");
+    m_resetBtns[i].setImage(MY_PATH + "assets/images/reset.png");
     m_resetBtns[i].setPosition({395, 338 + 62 * i});
   }
 
   // back button
-  m_backBtn.setImage("assets/images/back.png");
+  m_backBtn.setImage(MY_PATH + "assets/images/back.png");
   m_backBtn.setPosition({25, 25});
 }
 
@@ -101,7 +102,7 @@ std::string HighScoreState::ReadScore(std::string file) {
   std::fstream highscoreFile;
   std::string highscore;
 
-  highscoreFile.open("db/" + file, std::ios::in);
+  highscoreFile.open(MY_PATH + "db/" + file, std::ios::in);
 
   if (highscoreFile.is_open()) {
     getline(highscoreFile, highscore);
@@ -114,7 +115,7 @@ std::string HighScoreState::ReadScore(std::string file) {
 void HighScoreState::ResetScore(std::string file) {
   std::fstream highScoreFile;
 
-  highScoreFile.open("db/" + file, std::ios::out);
+  highScoreFile.open(MY_PATH + "db/" + file, std::ios::out);
 
   if (highScoreFile.is_open()) {
     highScoreFile << "59:59";

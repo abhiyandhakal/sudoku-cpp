@@ -3,7 +3,8 @@
 // ===========================================
 // CONSTRUCTOR
 // ===========================================
-WinState::WinState() : m_highscoreTime("59:59"), m_elapsedTime("00:00") {
+WinState::WinState()
+    : m_highscoreTime("59:59"), m_elapsedTime("00:00"), MY_PATH(PATH) {
   LoadStatic();
   LoadBtns();
 }
@@ -26,7 +27,7 @@ void WinState::setHighscoreTime() {
   // easy level score
   if (m_level == "Easy") {
     // reading text file to get highscore
-    highscoreFile.open("db/highscore-easy.txt", std::ios::in);
+    highscoreFile.open(MY_PATH + "db/highscore-easy.txt", std::ios::in);
 
     if (highscoreFile.is_open()) {
       getline(highscoreFile, m_highscoreTime);
@@ -36,7 +37,7 @@ void WinState::setHighscoreTime() {
   // medium level score
   else if (m_level == "Medium") {
     // reading text file to get highscore
-    highscoreFile.open("db/highscore-medium.txt", std::ios::in);
+    highscoreFile.open(MY_PATH + "db/highscore-medium.txt", std::ios::in);
 
     if (highscoreFile.is_open()) {
       getline(highscoreFile, m_highscoreTime);
@@ -46,7 +47,7 @@ void WinState::setHighscoreTime() {
   // hard level score
   else if (m_level == "Hard") {
     // reading text file to get highscore
-    highscoreFile.open("db/highscore-hard.txt", std::ios::in);
+    highscoreFile.open(MY_PATH + "db/highscore-hard.txt", std::ios::in);
 
     if (highscoreFile.is_open()) {
       getline(highscoreFile, m_highscoreTime);
@@ -56,7 +57,7 @@ void WinState::setHighscoreTime() {
   // expert level score
   else if (m_level == "Expert") {
     // reading text file to get highscore
-    highscoreFile.open("db/highscore-expert.txt", std::ios::in);
+    highscoreFile.open(MY_PATH + "db/highscore-expert.txt", std::ios::in);
 
     if (highscoreFile.is_open()) {
       getline(highscoreFile, m_highscoreTime);
@@ -77,17 +78,17 @@ void WinState::setLevel(std::string level) {
 void WinState::LoadStatic() {
   // IMAGES
   // background image
-  m_bgTexture.loadFromFile("assets/images/background.png");
+  m_bgTexture.loadFromFile(MY_PATH + "assets/images/background.png");
   m_bgSprite.setTexture(m_bgTexture);
 
   // congrats image
-  m_congratsTexture.loadFromFile("assets/images/congrats.png");
+  m_congratsTexture.loadFromFile(MY_PATH + "assets/images/congrats.png");
   m_congratsSprite.setTexture(m_congratsTexture);
   m_congratsSprite.setPosition({80, 110});
 
   // fonts
-  m_font1.loadFromFile("assets/fonts/Inter/static/Inter-Bold.ttf");
-  m_font2.loadFromFile("assets/fonts/Nerko_One/NerkoOne-Regular.ttf");
+  m_font1.loadFromFile(MY_PATH + "assets/fonts/Inter/static/Inter-Bold.ttf");
+  m_font2.loadFromFile(MY_PATH + "assets/fonts/Nerko_One/NerkoOne-Regular.ttf");
 
   // TEXT
   // you won text
@@ -142,7 +143,7 @@ void WinState::LoadStatic() {
 
 void WinState::LoadBtns() {
   // back to home button
-  m_returnToHomeBtn.setImage("assets/images/home-icon.png");
+  m_returnToHomeBtn.setImage(MY_PATH + "assets/images/home-icon.png");
   m_returnToHomeBtn.setPosition({265, 425});
 }
 // ===========================================

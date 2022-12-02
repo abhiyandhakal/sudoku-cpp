@@ -15,6 +15,8 @@ class Game {
   sf::RenderWindow m_window;
   std::string m_activeState;
 
+  std::string MY_PATH;
+
   sf::ContextSettings m_settings;
 
   void HandleInputs();

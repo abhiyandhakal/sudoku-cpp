@@ -8,7 +8,8 @@ GameState::GameState(Stopwatch& stopwatch)
       m_gridPos({75, 100}),
       m_highlightedNum(""),
       m_lostFocus(false),
-      m_gainedFocus(true) {
+      m_gainedFocus(true),
+      MY_PATH(PATH) {
   // initial position
   int m_rectX = m_gridPos.x;
   int m_rectY = m_gridPos.y;
@@ -48,20 +49,20 @@ void GameState::setLevel(std::string level) {
 void GameState::LoadStatic() {
   // IMAGES
   // background image
-  m_bgTexture.loadFromFile("assets/images/background.png");
+  m_bgTexture.loadFromFile(MY_PATH + "assets/images/background.png");
   m_bgSprite.setTexture(m_bgTexture);
 
   // sudoku grid
-  m_sudokuGridTexture.loadFromFile("assets/images/sudoku-grid.png");
+  m_sudokuGridTexture.loadFromFile(MY_PATH + "assets/images/sudoku-grid.png");
   m_sudokuGridSprite.setTexture(m_sudokuGridTexture);
   m_sudokuGridSprite.setPosition(m_gridPos);
 
-  m_titleTexture.loadFromFile("assets/images/SUDOKU.png");
+  m_titleTexture.loadFromFile(MY_PATH + "assets/images/SUDOKU.png");
   m_titleSprite.setTexture(m_titleTexture);
   m_titleSprite.setPosition({199, 15});
 
   // font
-  m_font.loadFromFile("assets/fonts/Inter/static/Inter-Bold.ttf");
+  m_font.loadFromFile(MY_PATH + "assets/fonts/Inter/static/Inter-Bold.ttf");
 
   // TEXTS
   m_levelText.setString(m_level);
@@ -97,11 +98,11 @@ void GameState::LoadStatic() {
 
 void GameState::LoadBtns() {
   // pause button
-  m_pauseBtn.setImage("assets/images/pause.png");
+  m_pauseBtn.setImage(MY_PATH + "assets/images/pause.png");
   m_pauseBtn.setPosition({15, 15});
 
   // undo button
-  m_eraseBtn.setImage("assets/images/eraser.png");
+  m_eraseBtn.setImage(MY_PATH + "assets/images/eraser.png");
   m_eraseBtn.setPosition({534, 15});
 
   // number buttons
@@ -177,7 +178,7 @@ void GameState::setHighscore() {
   // easy level highscore
   if (m_level == "Easy") {
     // reading text file to get highscore
-    highscoreFile.open("db/highscore-easy.txt", std::ios::in);
+    highscoreFile.open(MY_PATH + "db/highscore-easy.txt", std::ios::in);
 
     if (highscoreFile.is_open()) {
       getline(highscoreFile, highscoreStr);
@@ -189,7 +190,7 @@ void GameState::setHighscore() {
 
     // check if new record is made
     if (StringToSeconds(m_timeTextDynamic.getString()) < highscore) {
-      highscoreFile.open("db/highscore-easy.txt", std::ios::out);
+      highscoreFile.open(MY_PATH + "db/highscore-easy.txt", std::ios::out);
 
       std::string newHighscoreStr = m_timeTextDynamic.getString();
 
@@ -203,7 +204,7 @@ void GameState::setHighscore() {
   // medium level highscore
   if (m_level == "Medium") {
     // reading text file to get highscore
-    highscoreFile.open("db/highscore-medium.txt", std::ios::in);
+    highscoreFile.open(MY_PATH + "db/highscore-medium.txt", std::ios::in);
 
     if (highscoreFile.is_open()) {
       getline(highscoreFile, highscoreStr);
@@ -215,7 +216,7 @@ void GameState::setHighscore() {
 
     // check if new record is made
     if (StringToSeconds(m_timeTextDynamic.getString()) < highscore) {
-      highscoreFile.open("db/highscore-medium.txt", std::ios::out);
+      highscoreFile.open(MY_PATH + "db/highscore-medium.txt", std::ios::out);
 
       std::string newHighscoreStr = m_timeTextDynamic.getString();
 
@@ -229,7 +230,7 @@ void GameState::setHighscore() {
   // hard level highscore
   if (m_level == "Hard") {
     // reading text file to get highscore
-    highscoreFile.open("db/highscore-hard.txt", std::ios::in);
+    highscoreFile.open(MY_PATH + "db/highscore-hard.txt", std::ios::in);
 
     if (highscoreFile.is_open()) {
       getline(highscoreFile, highscoreStr);
@@ -241,7 +242,7 @@ void GameState::setHighscore() {
 
     // check if new record is made
     if (StringToSeconds(m_timeTextDynamic.getString()) < highscore) {
-      highscoreFile.open("db/highscore-hard.txt", std::ios::out);
+      highscoreFile.open(MY_PATH + "db/highscore-hard.txt", std::ios::out);
 
       std::string newHighscoreStr = m_timeTextDynamic.getString();
 
@@ -255,7 +256,7 @@ void GameState::setHighscore() {
   // expert level highscore
   if (m_level == "Expert") {
     // reading text file to get highscore
-    highscoreFile.open("db/highscore-expert.txt", std::ios::in);
+    highscoreFile.open(MY_PATH + "db/highscore-expert.txt", std::ios::in);
 
     if (highscoreFile.is_open()) {
       getline(highscoreFile, highscoreStr);
@@ -267,7 +268,7 @@ void GameState::setHighscore() {
 
     // check if new record is made
     if (StringToSeconds(m_timeTextDynamic.getString()) < highscore) {
-      highscoreFile.open("db/highscore-expert.txt", std::ios::out);
+      highscoreFile.open(MY_PATH + "db/highscore-expert.txt", std::ios::out);
 
       std::string newHighscoreStr = m_timeTextDynamic.getString();
 

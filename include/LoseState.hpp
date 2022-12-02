@@ -1,7 +1,6 @@
 #ifndef LOSE_STATE_HPP
 #define LOSE_STATE_HPP
 
-#include "DEFINITIONS.hpp"
 #include "ImageButton.hpp"
 #include "TextButton.hpp"
 
@@ -10,6 +9,8 @@ class LoseState {
   sf::RenderWindow* m_window;
   std::string* m_activeState;
   std::string m_level;
+
+  std::string MY_PATH;
 
   // fonts
   sf::Font m_font1;

@@ -1,7 +1,6 @@
 #ifndef HOW_TO_PLAY_STATE
 #define HOW_TO_PLAY_STATE
 
-#include "DEFINITIONS.hpp"
 #include "ImageButton.hpp"
 
 class HowToPlayState {
@@ -9,6 +8,8 @@ class HowToPlayState {
   sf::RenderWindow* m_window;
   std::string* m_activeState;
   int m_activeImageNum;
+
+  std::string MY_PATH;
 
   // images
   sf::Texture m_textures[3];

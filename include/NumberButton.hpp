@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+#include "DEFINITIONS.hpp"
+
 class NumberButton {
  public:
   NumberButton();
@@ -26,6 +28,8 @@ class NumberButton {
   sf::Text m_text;
   sf::RectangleShape m_container;
   sf::Font m_font;
+
+  std::string MY_PATH;
 
   // mouse actions
   bool IsMouseOver(sf::RenderWindow &window);  // hover

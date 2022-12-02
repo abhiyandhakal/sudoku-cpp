@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <cstring>
 
+#include "DEFINITIONS.hpp"
+
 class SudokuButton {
  public:
   SudokuButton();
@@ -37,6 +39,8 @@ class SudokuButton {
   sf::Text m_text;
   std::string m_status;
   sf::Font m_font;
+
+  std::string MY_PATH;
 
   // mouse actions (booleans)
   bool IsMouseOver(sf::RenderWindow &window);  // hover

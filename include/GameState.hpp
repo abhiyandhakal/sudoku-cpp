@@ -15,6 +15,8 @@ class GameState {
   std::string* m_activeState;
   std::string m_level;
 
+  std::string MY_PATH;
+
   int m_clickedNum;
 
   // font

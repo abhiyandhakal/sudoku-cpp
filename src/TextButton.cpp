@@ -1,12 +1,12 @@
 #include "TextButton.hpp"
 
-TextButton::TextButton() {
+TextButton::TextButton() : MY_PATH(PATH) {
   // set values
   m_setColor = sf::Color(50, 50, 50);
   m_setBg = sf::Color(187, 185, 225);
 
   // initialize font
-  m_font.loadFromFile("assets/fonts/Inter/static/Inter-Bold.ttf");
+  m_font.loadFromFile(MY_PATH + "assets/fonts/Inter/static/Inter-Bold.ttf");
 
   // initialize text
   m_text.setString("hello world");
@@ -160,7 +160,7 @@ bool TextButton::Clicked(sf::RenderWindow &window, std::string &activeState,
   if (IsMouseUp(window)) {
     m_clickedOnce = false;
 
-    if (id == "exit") {
+    if (id == EXIT_ID) {
       window.close();
     } else if (id != "") {
       activeState = id;

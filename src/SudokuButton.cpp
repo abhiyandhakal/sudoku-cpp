@@ -1,11 +1,11 @@
 #include "SudokuButton.hpp"
 
-SudokuButton::SudokuButton() : m_status("not-active") {
+SudokuButton::SudokuButton() : m_status("not-active"), MY_PATH(PATH) {
   m_setColor = sf::Color::Black;
   m_setNum = 0;
 
   // load font
-  m_font.loadFromFile("assets/fonts/Inter/static/Inter-Bold.ttf");
+  m_font.loadFromFile(MY_PATH + "assets/fonts/Inter/static/Inter-Bold.ttf");
 
   // load overlay
   m_overlay.setFillColor(sf::Color::Transparent);

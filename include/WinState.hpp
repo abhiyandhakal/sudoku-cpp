@@ -4,7 +4,6 @@
 #include <fstream>
 #include <sstream>
 
-#include "DEFINITIONS.hpp"
 #include "ImageButton.hpp"
 
 class WinState {
@@ -12,6 +11,8 @@ class WinState {
   sf::RenderWindow* m_window;
   std::string* m_activeState;
   std::string m_level;
+
+  std::string MY_PATH;
 
   // fonts
   sf::Font m_font1;

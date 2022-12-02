@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+#include "DEFINITIONS.hpp"
+
 class ImageButton {
  public:
   ImageButton();
@@ -24,6 +26,8 @@ class ImageButton {
   // image
   sf::Texture m_texture;
   sf::Sprite m_sprite;
+
+  std::string MY_PATH;
 
   // mouse actions (boolean)
   bool IsMouseOver(sf::RenderWindow &window);

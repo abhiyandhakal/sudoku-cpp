@@ -1,7 +1,7 @@
 #include "Game.hpp"
 
 Game::Game(sf::Vector2f winSize, std::string title, int framerateLimit)
-    : m_activeState(MAIN_MENU_ID) {
+    : m_activeState(MAIN_MENU_ID), MY_PATH(PATH) {
   // smooth shapes
   m_settings.antialiasingLevel = 8;
 
@@ -13,7 +13,7 @@ Game::Game(sf::Vector2f winSize, std::string title, int framerateLimit)
   // set icon
   /////////////////////////////////////////////////////////
   auto image = sf::Image{};
-  if (!image.loadFromFile("assets/images/icon.png")) {
+  if (!image.loadFromFile(MY_PATH + "assets/images/icon.png")) {
     std::cout << "Error loading icon\n";
   }
 

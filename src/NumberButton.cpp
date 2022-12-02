@@ -1,11 +1,11 @@
 #include "NumberButton.hpp"
 
-NumberButton::NumberButton() {
+NumberButton::NumberButton() : MY_PATH(PATH) {
   // set value
   m_setColor = sf::Color(0, 0, 85);
 
   // load font
-  m_font.loadFromFile("assets/fonts/Nerko_One/NerkoOne-Regular.ttf");
+  m_font.loadFromFile(MY_PATH + "assets/fonts/Nerko_One/NerkoOne-Regular.ttf");
 
   // load text
   m_text.setString("0");

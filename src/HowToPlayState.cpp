@@ -2,7 +2,7 @@
 
 // load stuff
 void HowToPlayState::LoadStatic() {
-  std::string path = "assets/images/how-to-play/";
+  std::string path = MY_PATH + "assets/images/how-to-play/";
 
   for (int i = 0; i < 3; i++) {
     m_textures[i].loadFromFile(path + std::to_string(i + 1) + ".png");
@@ -12,8 +12,8 @@ void HowToPlayState::LoadStatic() {
 
 void HowToPlayState::LoadBtns() {
   // load images
-  m_backBtn.setImage("assets/images/back.png");
-  m_forwardBtn.setImage("assets/images/forward.png");
+  m_backBtn.setImage(MY_PATH + "assets/images/back.png");
+  m_forwardBtn.setImage(MY_PATH + "assets/images/forward.png");
 
   // set position
   m_backBtn.setPosition({42, 19});
@@ -21,7 +21,7 @@ void HowToPlayState::LoadBtns() {
 }
 
 // constructor
-HowToPlayState::HowToPlayState() : m_activeImageNum(0) {
+HowToPlayState::HowToPlayState() : m_activeImageNum(0), MY_PATH(PATH) {
   LoadStatic();
   LoadBtns();
 }

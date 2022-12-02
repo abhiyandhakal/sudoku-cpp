@@ -3,7 +3,7 @@
 // ===========================================
 // CONSTRUCTORS
 // ===========================================
-LoseState::LoseState() {
+LoseState::LoseState() : MY_PATH(PATH) {
   LoadStatic();
   LoadBtns();
 }
@@ -27,8 +27,8 @@ void LoseState::setLevel(std::string level) { m_level = level; }
 void LoseState::LoadStatic() {
   // IMAGES
   // load textures
-  m_bgTexture.loadFromFile("assets/images/background.png");
-  m_lostTexture.loadFromFile("assets/images/lost.png");
+  m_bgTexture.loadFromFile(MY_PATH + "assets/images/background.png");
+  m_lostTexture.loadFromFile(MY_PATH + "assets/images/lost.png");
 
   // sprites
   m_bgSprite.setTexture(m_bgTexture);
@@ -38,8 +38,8 @@ void LoseState::LoadStatic() {
   m_lostSprite.setPosition({115, 148});
 
   // fonts
-  m_font1.loadFromFile("assets/fonts/Inter/static/Inter-Bold.ttf");
-  m_font2.loadFromFile("assets/fonts/Nerko_One/NerkoOne-Regular.ttf");
+  m_font1.loadFromFile(MY_PATH + "assets/fonts/Inter/static/Inter-Bold.ttf");
+  m_font2.loadFromFile(MY_PATH + "assets/fonts/Nerko_One/NerkoOne-Regular.ttf");
 
   // TEXT
   // better luck next time text
@@ -66,7 +66,7 @@ void LoseState::LoadStatic() {
 
 void LoseState::LoadBtns() {
   // back to home button
-  m_homeBtn.setImage("assets/images/home-icon.png");
+  m_homeBtn.setImage(MY_PATH + "assets/images/home-icon.png");
   m_homeBtn.setPosition({265, 422});
 }
 // ===========================================

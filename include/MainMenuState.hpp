@@ -1,13 +1,14 @@
 #ifndef MAIN_MENU_STATE_HPP
 #define MAIN_MENU_STATE_HPP
 
-#include "DEFINITIONS.hpp"
 #include "TextButton.hpp"
 
 class MainMenuState {
  private:
   sf::RenderWindow* m_window;
   std::string* m_activeState;
+
+  std::string MY_PATH;
 
   // =================================
   // IMAGES

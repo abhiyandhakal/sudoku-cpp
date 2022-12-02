@@ -1,7 +1,6 @@
 #ifndef PAUSE_STATE_HPP
 #define PAUSE_STATE_HPP
 
-#include "DEFINITIONS.hpp"
 #include "Stopwatch.hpp"
 #include "TextButton.hpp"
 
@@ -9,6 +8,8 @@ class PauseState {
  private:
   sf::RenderWindow* m_window;
   std::string* m_activeState;
+
+  std::string MY_PATH;
 
   // font
   sf::Font m_font;

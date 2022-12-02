@@ -1,7 +1,8 @@
 #include "PauseState.hpp"
 
 // constructor
-PauseState::PauseState(Stopwatch& stopwatch) : m_stopwatch(stopwatch) {
+PauseState::PauseState(Stopwatch& stopwatch)
+    : m_stopwatch(stopwatch), MY_PATH(PATH) {
   LoadStatic();
   LoadBtns();
 }
@@ -18,11 +19,11 @@ void PauseState::setActiveState(std::string* activeState) {
 // ===========================================
 void PauseState::LoadStatic() {
   // background image
-  m_bgTexture.loadFromFile("assets/images/background.png");
+  m_bgTexture.loadFromFile(MY_PATH + "assets/images/background.png");
   m_bgSprite.setTexture(m_bgTexture);
 
   // font
-  m_font.loadFromFile("assets/fonts/Inter/static/Inter-Bold.ttf");
+  m_font.loadFromFile(MY_PATH + "assets/fonts/Inter/static/Inter-Bold.ttf");
 
   // text
   m_title.setString("Paused");

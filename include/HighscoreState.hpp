@@ -1,7 +1,6 @@
 #ifndef HIGHSCORE_STATE_HPP
 #define HIGHSCORE_STATE_HPP
 
-#include "DEFINITIONS.hpp"
 #include "ImageButton.hpp"
 #include "fstream"
 
@@ -9,6 +8,8 @@ class HighScoreState {
  private:
   sf::RenderWindow* m_window;
   std::string *m_activeState, m_highscore[4];
+
+  std::string MY_PATH;
 
   sf::Font m_font, m_fontBold;
 

@@ -1,5 +1,4 @@
-#ifndef DEFINITIONS_HPP
-#define DEFINITIONS_HPP
+#pragma once
 
 #define EXIT_ID "exit"
 #define MAIN_MENU_ID "main-menu"
@@ -12,5 +11,3 @@
 #define LOSE_ID "lose"
 
 #define NUM 9
-
-#endif

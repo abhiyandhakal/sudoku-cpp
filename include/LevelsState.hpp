@@ -1,7 +1,6 @@
 #ifndef LEVELS_HPP
 #define LEVELS_HPP
 
-#include "DEFINITIONS.hpp"
 #include "GameState.hpp"
 #include "ImageButton.hpp"
 #include "TextButton.hpp"
@@ -10,6 +9,8 @@ class LevelsState {
  private:
   sf::RenderWindow* m_window;
   std::string* m_activeState;
+
+  std::string MY_PATH;
 
   sf::Font m_font;
 
