@@ -98,7 +98,7 @@ void LevelsState::Update(GameState& gameState, WinState& winState,
     gameState.ResumeStopwatch();
 
     winState.setLevel("Expert");
-    loseState.setLevel("Hard");
+    loseState.setLevel("Expert");
   }
 }
 
