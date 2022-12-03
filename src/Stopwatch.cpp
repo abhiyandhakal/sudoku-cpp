@@ -1,5 +1,12 @@
 #include "Stopwatch.hpp"
 
+Stopwatch::Stopwatch() {
+  m_isPaused = true;
+  m_runTime = 0;
+  m_clock.restart();
+  Pause();
+}
+
 void Stopwatch::Reset() {
   m_clock.restart();
   m_runTime = 0;

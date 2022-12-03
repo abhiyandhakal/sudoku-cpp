@@ -35,11 +35,18 @@ else
   echo "Exec=sudoku" >> sudoku.desktop
   echo "Icon=$PWD/assets/images/icon.png" >> sudoku.desktop
   echo "Version=1.0" >> sudoku.desktop
+  echo "[Desktop Entry]" > sudoku.desktop
+  echo "Encoding=UTF-8" >> sudoku.desktop
+  echo "Type=Application" >> sudoku.desktop
+  echo "Terminal=false" >> sudoku.desktop
+  echo "Name=Sudoku" >> sudoku.desktop
+  echo "Exec=sudoku" >> sudoku.desktop
+  echo "Icon=$PWD/assets/images/icon.png" >> sudoku.desktop
+  echo "Version=1.0" >> sudoku.desktop
+
 
   sudo mv sudoku.desktop $HOME/.local/share/applications
 
   sudo chmod 777 db/
   sudo chmod 777 db/*
-
-  echo "hello world"
 fi

@@ -14,12 +14,7 @@ class Stopwatch {
   std::string Format(int time);
 
  public:
-  Stopwatch() {
-    m_isPaused = true;
-    m_runTime = 0;
-    m_clock.restart();
-    Pause();
-  }
+  Stopwatch();
 
   void Reset();
   void Resume();

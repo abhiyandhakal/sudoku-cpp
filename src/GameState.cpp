@@ -10,13 +10,6 @@ GameState::GameState(Stopwatch& stopwatch)
       m_lostFocus(false),
       m_gainedFocus(true),
       MY_PATH(PATH) {
-  // initial position
-  int m_rectX = m_gridPos.x;
-  int m_rectY = m_gridPos.y;
-
-  m_navRect.setPosition(m_gridPos);
-  m_navRect.setSize({50, 50});
-
   LoadStatic();
   LoadBtns();
 }
@@ -310,27 +303,6 @@ void GameState::ResumeStopwatch() {
 
 // ===========================================
 void GameState::Update(WinState& winState, LoseState& loseState) {
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-    if (m_rectX > m_gridPos.x) m_rectX -= 50;
-    std::cout << m_rectX << ", " << m_rectY << std::endl;
-  }
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-    if (m_rectX < (m_gridPos.x + m_sudokuGridSprite.getGlobalBounds().width))
-      m_rectX += 50;
-    std::cout << m_rectX << ", " << m_rectY << std::endl;
-  }
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-    if (m_rectY < m_gridPos.y + m_sudokuGridSprite.getGlobalBounds().height)
-      m_rectY += 50;
-    std::cout << m_rectX << ", " << m_rectY << std::endl;
-  }
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-    if (m_rectY > m_gridPos.y) m_rectY -= 50;
-    std::cout << m_rectX << ", " << m_rectY << std::endl;
-  }
-
-  m_navRect.setPosition(m_rectX, m_rectY);
-
   // starting the stopwatch
   m_stopwatch.Resume();
   m_timeTextDynamic.setString(m_stopwatch.getElapsedTime());
