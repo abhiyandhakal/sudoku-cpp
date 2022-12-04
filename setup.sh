@@ -8,17 +8,24 @@ else
   which apt >/dev/null 2>&1
   if [ $? -eq 0 ]
   then
-      sudo apt install libsfml-dev
+    sudo apt update
+    sudo apt install g++
+    sudo apt install make
+    sudo apt install libsfml-dev
   fi
   which dnf >/dev/null 2>&1
   if [ $? -eq 0 ]
   then
-      sudo dnf install SFML-devel
+    sudo dnf install g++
+    sudo dnf install SFML-devel
+    sudo dnf install make
   fi
   which pacman >/dev/null 2>&1
   if [ $? -eq 0 ]
   then
+    sudo pacman -S g++
       sudo pacman -S sfml
+      sudo pacman -S make
   fi
 
   echo "#define PATH \"${PWD}/\"" >> include/DEFINITIONS.hpp
