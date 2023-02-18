@@ -33,5 +33,3 @@ After running this script, you will have a desktop entry named **Sudoku** and yo
 ```running sudoku from terminal
 sudoku
 ```
-
-Note: _The development is still in process._
